@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ESSAY_TOPICS, ESSAY_CATEGORIES, ESSAY_STRUCTURE, SAMPLE_ESSAY_CONTENT, GS_TAGS } from "../lib/constants";
+import { ESSAY_TOPICS, ESSAY_CATEGORIES, ESSAY_STRUCTURE, ESSAY_SAMPLES, GS_TAGS } from "../lib/constants";
 
 function wordCount(text) {
   return text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -60,9 +60,11 @@ export default function EssayBuilder({ onNavigate }) {
   const totalTarget = ESSAY_STRUCTURE.reduce((s, sec) => s + sec.wordTarget, 0);
   const totalPct = Math.round((totalWords / totalTarget) * 100);
 
+  const hasSample = !useCustom && selectedTopic && ESSAY_SAMPLES[selectedTopic.id];
+
   const loadSample = () => {
-    if (selectedTopic?.id === SAMPLE_ESSAY_CONTENT.topicId) {
-      setContent(SAMPLE_ESSAY_CONTENT.sections);
+    if (hasSample) {
+      setContent(ESSAY_SAMPLES[selectedTopic.id]);
       setLoaded(true);
     }
   };
@@ -147,7 +149,7 @@ export default function EssayBuilder({ onNavigate }) {
             </>
           )}
 
-          {selectedTopic?.id === SAMPLE_ESSAY_CONTENT.topicId && !useCustom && (
+          {hasSample && (
             <button className="primary-btn essay-sample-btn" onClick={loadSample} disabled={loadedSample}>
               {loadedSample ? "✓ Sample loaded" : "Load sample essay"}
             </button>

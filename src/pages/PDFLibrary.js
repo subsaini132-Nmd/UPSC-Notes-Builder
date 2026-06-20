@@ -54,7 +54,7 @@ export default function PDFLibrary() {
         <div className="lib-stat"><span className="lib-stat-val">{pdfs.filter(p => p.status !== "indexed").length}</span><span className="lib-stat-label">Pending</span></div>
       </div>
 
-      {/* Drop zone */}
+      {/* Drop zone — compact horizontal strip */}
       <div
         className={`drop-zone ${dragging ? "dragging" : ""}`}
         onDragOver={e => { e.preventDefault(); setDragging(true); }}
@@ -63,9 +63,11 @@ export default function PDFLibrary() {
         onClick={() => fileRef.current.click()}
       >
         <div className="drop-icon">📂</div>
-        <div className="drop-title">Drag & drop PDFs here</div>
-        <div className="drop-sub">NCERT, Economic Survey, ARC Reports, PIB compilations, Current Affairs — any study material</div>
-        <div className="drop-btn-label">or click to browse</div>
+        <div className="drop-text-group">
+          <div className="drop-title">Drag & drop PDFs here</div>
+          <div className="drop-sub">NCERT, Economic Survey, ARC Reports, PIB compilations, Current Affairs — any study material</div>
+        </div>
+        <div className="drop-btn-label">+ Click to browse</div>
       </div>
 
       {/* PDF Table */}

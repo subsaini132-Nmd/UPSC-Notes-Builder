@@ -35,8 +35,11 @@ export default function NoteViewer({ noteId, noteContents, onBack, onNavigate })
     return () => container.removeEventListener("scroll", onScroll);
   }, [sectionsWithContent]);
 
-  const wordCount = Object.values(note.sections).reduce(
-    (n, txt) => n + txt.split(/\s+/).filter(Boolean).length, 0
+  const isDiagram = (str) => typeof str === "string" && str.startsWith('{"src"');
+  const parseDiagram = (str) => { try { return JSON.parse(str); } catch { return null; } };
+
+  const wordCount = Object.entries(note.sections).reduce(
+    (n, [, txt]) => n + (isDiagram(txt) ? 0 : txt.split(/\s+/).filter(Boolean).length), 0
   );
 
   return (
@@ -108,19 +111,38 @@ export default function NoteViewer({ noteId, noteContents, onBack, onNavigate })
                 <span className="viewer-section-icon">{s.icon}</span>
                 <span className="viewer-section-title">{s.label}</span>
                 <span className="viewer-section-wc">
-                  {note.sections[s.id].split(/\s+/).filter(Boolean).length}w
+                  {isDiagram(note.sections[s.id])
+                    ? "img"
+                    : `${note.sections[s.id].split(/\s+/).filter(Boolean).length}w`
+                  }
                 </span>
               </div>
               <div className="viewer-section-body">
-                {note.sections[s.id].split(" | ").length > 1
-                  ? (
-                    <ul className="viewer-list">
-                      {note.sections[s.id].split(" | ").map((pt, j) => (
-                        <li key={j}>{pt.trim()}</li>
-                      ))}
-                    </ul>
-                  )
-                  : <p>{note.sections[s.id]}</p>
+                {isDiagram(note.sections[s.id])
+                  ? (() => {
+                      const d = parseDiagram(note.sections[s.id]);
+                      return d?.src ? (
+                        <div className="viewer-diagram-wrap">
+                          <img
+                            src={d.src}
+                            alt={d.caption || "Diagram"}
+                            className="viewer-diagram-img"
+                          />
+                          {d.caption && (
+                            <p className="viewer-diagram-caption">{d.caption}</p>
+                          )}
+                        </div>
+                      ) : null;
+                    })()
+                  : note.sections[s.id].split(" | ").length > 1
+                    ? (
+                      <ul className="viewer-list">
+                        {note.sections[s.id].split(" | ").map((pt, j) => (
+                          <li key={j}>{pt.trim()}</li>
+                        ))}
+                      </ul>
+                    )
+                    : <p>{note.sections[s.id]}</p>
                 }
               </div>
             </div>

@@ -17,6 +17,14 @@ import GSProgress from "./pages/GSProgress";
 import EssayBuilder from "./pages/EssayBuilder";
 import MainsPlanner from "./pages/MainsPlanner";
 import OptionalTracker from "./pages/OptionalTracker";
+import AnswerPractice from "./pages/AnswerPractice";
+import MockTracker from "./pages/MockTracker";
+import DataSheet from "./pages/DataSheet";
+import SyllabusTracker from "./pages/SyllabusTracker";
+import StudyTimer from "./pages/StudyTimer";
+import QuoteBank from "./pages/QuoteBank";
+import AnswerFrameworks from "./pages/AnswerFrameworks";
+import RevisionCards from "./pages/RevisionCards";
 import { SAMPLE_NOTES, SAMPLE_NOTE_CONTENT } from "./lib/constants";
 import "./App.css";
 
@@ -99,7 +107,23 @@ export default function App() {
       case "planner":
         return <MainsPlanner onNavigate={navigate} />;
       case "optional":
-        return <OptionalTracker onNavigate={navigate} />;
+        return <OptionalTracker onNavigate={navigate} notes={notes} noteContents={noteContents} />;
+      case "practice":
+        return <AnswerPractice onNavigate={navigate} />;
+      case "mocks":
+        return <MockTracker onNavigate={navigate} />;
+      case "data":
+        return <DataSheet onNavigate={navigate} />;
+      case "syllabus":
+        return <SyllabusTracker onNavigate={navigate} notes={notes} noteContents={noteContents} />;
+      case "timer":
+        return <StudyTimer onNavigate={navigate} />;
+      case "quotes":
+        return <QuoteBank onNavigate={navigate} />;
+      case "frameworks":
+        return <AnswerFrameworks onNavigate={navigate} />;
+      case "rcards":
+        return <RevisionCards onNavigate={navigate} notes={notes} noteContents={noteContents} />;
       default:
         return <Dashboard onNavigate={navigate} notes={notes} />;
     }
