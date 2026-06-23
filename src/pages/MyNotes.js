@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { SAMPLE_NOTES, GS_TAGS } from "../lib/constants";
 
-export default function MyNotes({ onNavigate, notes = SAMPLE_NOTES }) {
-  const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
+export default function MyNotes({ onNavigate, notes = SAMPLE_NOTES, onDeleteNote }) {
+  const [filter,        setFilter]        = useState("all");
+  const [search,        setSearch]        = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const filtered = notes.filter(n => {
     const matchGs = filter === "all" || n.gs === filter;
@@ -59,6 +60,20 @@ export default function MyNotes({ onNavigate, notes = SAMPLE_NOTES }) {
                     </span>
                   )}
                   <span className={`status-pill ${note.status}`}>{note.status}</span>
+                  {onDeleteNote && confirmDelete !== note.id && (
+                    <button className="note-card-del-btn"
+                      title="Delete note"
+                      onClick={e => { e.stopPropagation(); setConfirmDelete(note.id); }}>
+                      ✕
+                    </button>
+                  )}
+                  {confirmDelete === note.id && (
+                    <div className="note-card-del-confirm" onClick={e => e.stopPropagation()}>
+                      <span>Delete?</span>
+                      <button className="note-del-yes" onClick={e => { e.stopPropagation(); onDeleteNote(note.id); setConfirmDelete(null); }}>Yes</button>
+                      <button className="note-del-no"  onClick={e => { e.stopPropagation(); setConfirmDelete(null); }}>No</button>
+                    </div>
+                  )}
                 </div>
                 <h3 className="note-card-title">{note.topic}</h3>
                 <div className="note-card-meta">

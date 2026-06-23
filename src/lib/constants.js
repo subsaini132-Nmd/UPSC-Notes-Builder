@@ -2,12 +2,15 @@ export const NAV_ITEMS = [
   // Workspace
   { id: "dashboard",  label: "Dashboard",        icon: "grid",       desc: "Overview & quick access" },
   { id: "library",    label: "PDF Library",      icon: "library",    desc: "Upload & manage sources" },
+  { id: "syllabusmap", label: "Syllabus Manager", icon: "map-pin",   desc: "Manage UPSC syllabus & map PDF topics" },
+  { id: "toppers",     label: "Topper Copies",   icon: "book-open",  desc: "Upload & read handwritten topper copies with OCR" },
   { id: "generator",  label: "Note Generator",   icon: "sparkles",   desc: "Create notes from topics" },
   { id: "notes",      label: "My Notes",         icon: "book-open",  desc: "Browse & edit notes" },
   { id: "planner",    label: "Mains Planner",    icon: "clock",      desc: "Exam countdown & daily tasks" },
   // Tools
   { id: "affairs",    label: "Current Affairs",  icon: "newspaper",  desc: "Daily CA linked to topics" },
   { id: "pyq",        label: "PYQ Mapper",       icon: "target",     desc: "Map to past questions" },
+  { id: "chatbot",    label: "AI Chatbot",       icon: "bot",        desc: "Ask UPSC questions, get structured answers" },
   { id: "answers",    label: "Answer Builder",   icon: "pen-line",   desc: "Generate word-limited answers" },
   { id: "search",     label: "Search",           icon: "search",     desc: "Cross-note search & filter" },
   { id: "essay",      label: "Essay Builder",    icon: "feather",    desc: "Structure & write essays" },
@@ -140,6 +143,31 @@ export const SAMPLE_PYQS = [
     question: "In the context of growing challenges faced by women in India, discuss the role of the National Commission for Women.",
     approach: "NCW: composition (chairperson + 5 members), statutory body (NCW Act 1990). Functions: quasi-judicial, advisory, research, monitoring. Recent actions: DV, trafficking, POSH. Challenges: non-binding orders, under-staffing. Reforms: teeth and funding."
   },
+  {
+    id: "p11", year: 2023, paper: "gs3", marks: 15,
+    question: "Urban flooding has become a recurrent annual disaster in Indian cities. Examine the causes and suggest measures for better urban flood management.",
+    approach: "Causes: encroachment on wetlands (Bengaluru 79% lakes lost), imperviousness 60-80%, undersized drains, jurisdictional fragmentation. Climate: IPCC AR6 +20-30% rainfall intensity. Measures: Blue-Green infrastructure, single drainage authority, 100-year design standard, IoT early warning (Pune model)."
+  },
+  {
+    id: "p12", year: 2023, paper: "gs3", marks: 15,
+    question: "Discuss India's commitments under the Paris Agreement and analyse the challenges in achieving its Nationally Determined Contributions (NDCs).",
+    approach: "NDC targets: 45% emission intensity reduction, 50% non-fossil power by 2030, net zero 2070. Progress: 196 GW renewables. Challenges: climate finance gap ($100B unmet), coal transition (2 cr workers), technology barriers. Way forward: Green Hydrogen, carbon markets, sovereign green bonds."
+  },
+  {
+    id: "p13", year: 2022, paper: "gs4", marks: 10,
+    question: "What do you understand by the 'code of ethics' for civil servants? Discuss the challenges in enforcing ethical behaviour in public administration.",
+    approach: "Nolan's 7 principles. India: 2nd ARC 4th Report (2007), Mission Karmayogi (2020). Challenges: politicisation (transfer-posting), regulatory capture, revolving door, weak whistleblower protection. Measures: Public Services Code, stronger Lokpal, 360° appraisal, ethics audit."
+  },
+  {
+    id: "p14", year: 2024, paper: "gs3", marks: 15,
+    question: "India's Digital Public Infrastructure (DPI) model has emerged as a global template. Analyse its key components, achievements, and challenges.",
+    approach: "Components: JAM Trinity, UPI (16.6B txns/month), ONDC, DigiLocker. Achievements: DBT ₹6.3L cr leakage saved, 1.12L startups, G20 endorsement. Challenges: digital divide, data privacy (DPDPA rules pending), cybersecurity, platform concentration. Way forward: AI governance, CBDC scale-up, digital sovereignty."
+  },
+  {
+    id: "p15", year: 2022, paper: "gs2", marks: 15,
+    question: "Critically examine the role of Civil Society Organisations (CSOs) in strengthening democracy and governance in India.",
+    approach: "CSOs as watchdogs (RTI advocacy), service delivery (SEWA, Pratham), policy advocacy (MKSS → NREGA). Challenges: FCRA restrictions, elite capture, accountability deficit. Recent: FCRA crackdown 2020-23 — 6,600 NGO licences cancelled. Balance: regulation vs enabling environment."
+  },
 ];
 
 export const SAMPLE_NOTE_CONTENT = {
@@ -171,16 +199,94 @@ export const SAMPLE_NOTE_CONTENT = {
       wayforward: "1. Full operationalisation of Nari Shakti Vandan Act post-delimitation. 2. Universal childcare infrastructure (Anganwadi expansion) to enable FLFPR increase by 10pp. 3. Equal pay legislation with robust enforcement mechanism and workplace audits. 4. Digital literacy programmes targeting rural women via BharatNet last-mile. 5. Gender-responsive curriculum in schools to change patriarchal attitudes from an early age. 6. Fast-track courts for gender-based violence with dedicated public prosecutors. 7. Male engagement programmes — India-adapted HeForShe. 8. Gender impact assessment mandated for all major development projects.",
       conclusion: "Women empowerment is not merely a social objective but a strategic economic and governance imperative for India's Amrit Kaal. The aspiration of Viksit Bharat 2047 cannot be realised while half the population remains constrained by structural and cultural barriers. The synergy of constitutional guarantees, progressive legislation, targeted schemes, and a transformed social mindset — rooted in Ambedkar's vision of equality and dignity — can make India a global exemplar of inclusive growth. As Dr. APJ Abdul Kalam said: 'Empowering women is a prerequisite for creating a good nation.'"
     }
+  },
+  "2": {
+    topic: "Urban Flooding",
+    gs: "gs3",
+    date: "2024-11-10",
+    wordCount: 2210,
+    sections: {
+      definition: "Urban flooding is the inundation of land and properties in built-up areas caused by rainfall that exceeds the capacity of drainage systems or by overflow from water bodies. It differs from riverine flooding in that it is primarily triggered by intense short-duration precipitation concentrated in urban environments. The NDMA defines it as flooding in towns and cities resulting from inadequate stormwater drainage, encroachment on natural water bodies, and rapid imperviousness due to concretisation. Pluvial flooding (direct rainfall), fluvial flooding (river overflow), and groundwater flooding are its three principal types.",
+      background: "India's urbanisation accelerated post-liberalisation (1991), with urban population growing from 26% (1991) to 36% (2021). Early colonial cities — Bombay, Calcutta, Madras — had planned drainage but inadequate for modern densities. Post-independence haphazard urban sprawl on floodplains and wetlands compounded risk. The 2005 Mumbai floods (944 mm in 24 hours, 1,094 deaths, ₹550 crore loss) was a watershed moment, prompting NDMA to issue Urban Flood Management Guidelines (2010). Chennai 2015 (₹20,000 crore loss), Bengaluru 2022, and Delhi 2023 further exposed systemic failures.",
+      context: "Urban flooding has become an annual crisis across Indian cities. In 2023 alone: Delhi recorded highest July rainfall (153.7 mm on July 9) since 1982 causing 6 deaths and submerged Pragati Maidan tunnel; Himachal Pradesh saw flash floods with 250+ deaths; Chennai and coastal cities faced compound flooding. IPCC AR6 projects that extreme precipitation events will intensify by 20-30% under 2°C warming. India's urban areas cover only 3% of land but produce 60% of GDP — making urban flood resilience a macroeconomic imperative.",
+      causes: "Proximate: Intense short-duration rainfall (cloudburst events). Structural: (1) Encroachment on natural drainage channels and wetlands — Delhi's Yamuna floodplain built upon; Bengaluru lost 79% of its lakes. (2) Rapid imperviousness — urban surfaces now 60-80% impervious, reducing infiltration. (3) Undersized stormwater drains designed for 5-year return storms, not 50-year events. (4) Lack of integration between stormwater and sewage systems (combined sewer overflows). (5) Unplanned urbanisation in low-lying areas. (6) Poor solid waste management — drains choked by plastic. (7) Climate change intensifying rainfall events.",
+      impacts: "Economic: NDMA estimates annual urban flood losses at ₹5,000–8,000 crore. Mumbai 2005: ₹550 crore direct loss; Bengaluru 2022: ₹225 crore. Social: Displacement of slum-dwellers (most vulnerable); disruption to education and healthcare. Public health: Waterborne diseases — leptospirosis, cholera, typhoid — spike post-floods. Infrastructure: Damage to roads, bridges, underground utilities, vehicles. Agriculture in urban periphery. Long-term: Investor confidence erosion in flood-prone cities; declining land values in vulnerable zones.",
+      schemes: "AMRUT 2.0 (2021–26): ₹2.99 lakh crore for urban water supply and sewerage, includes stormwater drainage. Smart Cities Mission: Integrated Command and Control Centres for early warning. National Disaster Management Plan (NDMP) 2019: Urban flood-specific guidelines. Atal Mission for Rejuvenation and Urban Transformation (AMRUT) 1.0: Addressed drainage in 500 cities. Jal Shakti Abhiyan: Includes urban water body rejuvenation. State-level: Mumbai's Brihanmumbai Storm Water Drainage (BRIMSTOWAD) project — ₹7,180 crore for underground drains. Chennai's Integrated Storm Water Drain project.",
+      data: "India has 4,041 towns and 53 urban agglomerations with population >1 lakh (Census 2011). Urban population: 50 crore (2024); projected 60 crore by 2031. India's wetlands lost: 38% between 1970-2014 (MoEF). NDMA: 10 cities with population >4 million are highly vulnerable to urban flooding. World Bank (2019): Climate change could cost India $0.5–3% of GDP annually by 2050 without adaptation. Bengaluru: 79% of wetlands lost in 50 years; from 260 lakes (1960) to 79 (2016). Delhi: 97 drains mapped, only 18 fully functional (CAG 2022).",
+      challenges: "1. Jurisdictional fragmentation: Stormwater drainage (municipal), rivers (state irrigation), national highways (NHAI), railways — no single authority. 2. Outdated masterplans: Most city masterplans do not integrate flood risk zoning. 3. Political economy of encroachment: Removal of floodplain encroachments faces resistance from vote-bank politics. 4. Financing gap: Estimated ₹10 lakh crore needed for adequate urban drainage infrastructure. 5. Data deficit: Real-time rainfall and drainage flow monitoring absent in most cities. 6. Climate uncertainty: Historical rainfall data insufficient for future extreme event design. 7. O&M neglect: Drains desilted only annually despite year-round need.",
+      intl: "Netherlands 'Room for the River' programme: Relocating dykes, creating water squares and retention basins — reduced flood losses by 40%. Singapore's ABC Waters programme: Active-Beautiful-Clean — integrating drainage into urban parks and landscapes; 100 ABC Waters projects. Tokyo's Metropolitan Area Outer Underground Discharge Channel (G-Cans): Underground tunnel system with 59m diameter tanks — handles storms up to 5-year return period. Copenhagen post-2011 cloudburst: Superblocks redesigned with green roofs, permeable pavements, and underground cisterns. Rotterdam Water Square: Public plaza transforms into water retention pool during storms.",
+      india: "Surat, Gujarat: After 2006 floods, invested ₹1,500 crore in drainage; now ranked among India's best-managed flood-resilient cities. Pune Municipal Corporation: Real-time flood Early Warning System (EWS) with SMS alerts; reduced casualties by 60%. NMMC (Navi Mumbai): Maintained natural drainage network alongside planned urban growth — significantly lower flood incidence. Thiruvananthapuram: Blue-Green Network initiative linking 7 river basins with urban parks. Indore: Integrated SWD master plan 2041 approved, serving as national model.",
+      wayforward: "1. Urban Flood Resilience Law: Statutory mandate for floodplain zoning and drainage masterplans in all cities >1 lakh population. 2. Blue-Green Infrastructure: Nature-based solutions — urban wetland restoration, permeable pavements, green roofs — alongside grey infrastructure. 3. 100-year storm design standard for critical infrastructure (hospitals, power stations). 4. Real-time early warning: IoT sensors in drains + integration with IMD's Doppler radar network. 5. Single drainage authority per metropolitan area — ending jurisdictional fragmentation. 6. Flood insurance: Mandatory flood risk disclosure in property transactions; parametric insurance products for urban local bodies. 7. Citizen science: Community-based flood monitoring apps (like Mumbai's 'Brihanmumbai Drain-Map').",
+      conclusion: "Urban flooding is fundamentally a governance crisis as much as a climate crisis. India's cities cannot aspire to be engines of a $5-trillion economy while annually losing crores to preventable inundation. The convergence of AMRUT 2.0, Smart Cities Mission, and Disaster Management frameworks offers an unprecedented opportunity to build truly water-resilient cities. Drawing lessons from Singapore, Rotterdam, and Surat, India must pivot from post-disaster response to pre-disaster resilience — integrating nature, infrastructure, and governance into a unified urban water management paradigm."
+    }
+  },
+  "3": {
+    topic: "Climate Change",
+    gs: "gs3",
+    date: "2024-11-08",
+    wordCount: 3100,
+    sections: {
+      definition: "Climate change refers to long-term, large-scale shifts in global temperatures and weather patterns, primarily driven since the mid-20th century by human activities that release greenhouse gases (GHGs) into the atmosphere. The UNFCCC defines it as 'change of climate which is attributed directly or indirectly to human activity that alters the composition of the global atmosphere.' The IPCC AR6 (2021–22) unequivocally states that human-induced climate change is already causing widespread and rapid changes in the atmosphere, ocean, cryosphere, and biosphere — with 'each of the last four decades successively warmer than any decade since 1850.'",
+      background: "The scientific understanding of climate change began with Svante Arrhenius (1896) who first calculated that doubling CO₂ would raise global temperature by 5–6°C. The International Geophysical Year (1957–58) established systematic CO₂ monitoring (Keeling Curve). The First World Climate Conference (1979) acknowledged anthropogenic influence. The IPCC was established in 1988 by WMO and UNEP. The UNFCCC was adopted at Rio Earth Summit (1992), Kyoto Protocol (1997) set binding targets for Annex-I countries. The Copenhagen Accord (2009) introduced INDCs; Paris Agreement (2015) is the current framework with NDC system and 1.5°C target.",
+      context: "Global mean temperature in 2023 reached 1.45°C above pre-industrial baseline — the warmest year on record. The UN Environment Programme's 'Emissions Gap Report 2023' warns current NDCs put world on track for 2.5–2.9°C warming by 2100. COP28 (Dubai, 2023): Historic 'global stocktake' concluded countries must transition away from fossil fuels; Loss and Damage Fund operationalised with initial $700 million. India's context: Temperature anomaly of +0.63°C since 1901 (IMD); extreme weather events increased 3× in frequency since 1970s; monsoon pattern shifts threatening agricultural systems.",
+      causes: "Greenhouse gas emissions by sector (global): Energy (34%), Industry (24%), Agriculture, Forestry & Land Use (22%), Transport (15%), Buildings (6%). CO₂ (main GHG, 76%), CH₄ (methane, 16%), N₂O (6%). India's emission profile: Coal-based power (46% of electricity), agriculture (methane from rice paddies and livestock), transport, cement/steel. India emits ~3.37 Gt CO₂-eq (2022) — 3rd largest emitter (after China at 14.4 Gt and USA at 5.1 Gt), but per capita emissions are 2.4 tCO₂-eq vs global average 6.3 tCO₂-eq and USA's 15 tCO₂-eq. CBDR-RC principle: historical cumulative responsibility of developed nations.",
+      impacts: "Physical: Global average sea level rising 3.3 mm/year; Arctic sea ice declining 13%/decade; glacial retreat (Himalayan glaciers retreating 40 cm/year). India-specific: (1) Agriculture: Rice and wheat yields could fall 4–10% per 1°C rise; IRRI warns South Asian yield declines. (2) Water: Himalayan glaciers (Gangotri retreating 22m/year) threaten dry-season flows in Ganga, Yamuna, Brahmaputra — affecting 600 million. (3) Coastal: 7,516 km coastline; 8 crore people in low-elevation zones at risk from 0.5m sea-level rise by 2100; Sundarbans losing 1,200 ha/year. (4) Health: Malaria/dengue range expansion; heat stress — 2022 heatwaves caused productivity loss equivalent to 167 million full-time work hours.",
+      schemes: "National Action Plan on Climate Change (NAPCC, 2008): 8 national missions — (1) Solar (JNNSM), (2) Enhanced Energy Efficiency, (3) Sustainable Habitat, (4) Water, (5) Himalayan Ecosystem, (6) Green India, (7) Sustainable Agriculture, (8) Strategic Knowledge for Climate Change. India's NDC (Updated 2022): (a) Reduce emission intensity of GDP by 45% from 2005 levels by 2030. (b) 50% cumulative electric power from non-fossil sources by 2030. (c) Create carbon sink of 2.5–3 Gt CO₂ through forest cover. Net Zero by 2070 announced at COP26. International Solar Alliance (ISA) — India-France initiative. Coalition for Disaster Resilient Infrastructure (CDRI).",
+      data: "India's renewables: 196 GW installed (Nov 2024) out of 450 GW target by 2030; solar at 90 GW, wind at 46 GW. Global CO₂ concentration: 421 ppm (Mauna Loa, 2023) vs pre-industrial 280 ppm. 2023 global average temperature: 1.45°C above 1850–1900 baseline. India's forest cover: 21.71% of geographic area (FSI 2021), target 33%. Loss and Damage Fund (COP28): $700 million initial pledge. Green Hydrogen Mission: 5 MMT production target by 2030; ₹19,744 crore outlay. India solar parks: 57 parks across 22 states; Bhadla Solar Park (Rajasthan) — 2,245 MW, world's largest.",
+      challenges: "1. Finance: $100 billion/year Copenhagen commitment still unmet; developed countries delivered only $83 billion in 2022. 2. Technology transfer: IP barriers prevent developing nations from accessing clean technologies. 3. Just transition: 2 crore coal workers in India face livelihood displacement without alternatives. 4. Adaptation vs. Mitigation balance: India needs large adaptation investment yet global climate finance is skewed 90:10 towards mitigation. 5. Loss and Damage: Vulnerable nations (small islands, LDCs) need compensation for irreversible climate impacts. 6. Food-Energy-Water nexus: Climate solutions (e.g., biofuels) may compete with food security. 7. Greenwashing: Corporate net-zero pledges often lack credible interim targets.",
+      intl: "Paris Agreement (2015): 196 signatories; 1.5°C limit; NDC system with 5-year ratchet mechanism. Kyoto Protocol (1997): CDM (Clean Development Mechanism) enabled $88 billion in project finance. Glasgow Climate Pact (COP26, 2021): 'Phase down' of unabated coal; methane pledge (30% reduction by 2030). COP28 (Dubai, 2023): Global Stocktake; Loss and Damage Fund; tripling renewables by 2030; transition away from fossil fuels. Kigali Amendment to Montreal Protocol: Phase-down of HFCs (super-GHGs). EU Carbon Border Adjustment Mechanism (CBAM): Tariff on carbon-intensive imports from 2026 — significant for India's steel, cement, aluminium exports.",
+      casestudies: "Odisha Disaster Risk Reduction: OTIS cyclone tracking, Odisha Disaster Rapid Action Force — mortality from cyclones reduced from 10,000+ (1999 Odisha cyclone) to near-zero (2019 Fani: 64 deaths vs. >10,000 with same intensity in 1999). Himachal Pradesh 2023 Floods: ₹12,000 crore damage — 70% from roads built on fragile slopes without EIA compliance; underscores climate-development trade-off. Cochin Airport: World's first fully solar-powered airport (50 MW); offset 1.8 lakh tonne CO₂ in 5 years. Sikkim Organic State: 100% organic farming — reduces N₂O emissions and builds soil carbon sink.",
+      wayforward: "1. Fast-track $1 trillion New Collective Quantified Goal (NCQG) post-COP29 to replace failed $100 billion pledge. 2. Carbon market integrity: Article 6 of Paris Agreement — robust accounting rules for international carbon trading. 3. Climate Justice: Compensation and capacity-building for climate-vulnerable nations under Loss and Damage Fund. 4. Green Hydrogen as export opportunity for India — position as global hub under ISA and G20 presidency legacy. 5. Urban heat island mitigation: Cool roofs, urban forests (30% tree cover in cities). 6. Mangrove restoration: India's 4,992 sq km mangroves — expand to buffer coastal communities. 7. Circular economy: Reduce embodied carbon in construction (50% of material GHGs).",
+      conclusion: "Climate change is the defining challenge of the 21st century — a 'threat multiplier' that intensifies every other developmental challenge India faces, from food security to water scarcity to public health. India, though a minor historical emitter, stands as the most exposed large economy. Its dual imperative — development and decarbonisation — can be reconciled through the philosophy of 'LiFE' (Lifestyle for Environment) and climate-positive growth. India's leadership at ISA, CDRI, and COP presidency moments positions it as a bridge between the Global North and South. The path to Viksit Bharat 2047 must be a green path."
+    }
+  },
+  "4": {
+    topic: "Ethics in Governance",
+    gs: "gs4",
+    date: "2024-11-05",
+    wordCount: 1980,
+    sections: {
+      definition: "Ethics in governance refers to the application of moral principles — honesty, integrity, transparency, accountability, fairness, and impartiality — in the exercise of public power and public trust. The Nolan Committee on Standards in Public Life (UK, 1995) enunciated 7 principles: Selflessness, Integrity, Objectivity, Accountability, Openness, Honesty, and Leadership. For civil servants, ethics is not a choice but a duty enshrined in service conduct rules. Mahatma Gandhi's Talisman — 'Will it help the weakest person?' — remains the most powerful ethical test in public administration.",
+      background: "The need for ethics in governance gained formal recognition post-independence through Articles 309–312 (civil services), AIS Conduct Rules (1968), and CVC Act (2003). Scandals such as the Bofors case (1980s), Hawala scam (1991), telecom spectrum allocation (2008), and coal block allocation (2012) underlined the crisis of ethical governance. The Second Administrative Reforms Commission (2nd ARC, 2007) — 4th Report on 'Ethics in Governance' — recommended a Citizen's Charter, Code of Ethics for civil servants, a Public Services Law, and strengthening of Lokayuktas. The Lokpal and Lokayuktas Act, 2013 was a landmark legislative response.",
+      context: "India ranks 93rd in Transparency International's Corruption Perception Index 2023 (score 40/100), indicating significant governance deficit. However, positive trends: RTI Act (2005) has filed 60 lakh+ applications annually; PFMS (Public Financial Management System) digitising ₹60 lakh crore in government transactions; DBT (Direct Benefit Transfer) of ₹6.3 lakh crore since 2013 reduced leakage. Mission Karmayogi (2020) — National Programme for Civil Services Capacity Building — aims to shift from rule-based to role-based governance grounded in values.",
+      challenges: "1. Conflicts of interest: Bureaucrats regulating sectors where they have private stakes; revolving door between govt and industry. 2. Regulatory capture: Regulators becoming advocates for the industries they oversee (SEBI, TRAI, CERC). 3. Political pressure: Transfer-posting mechanism as tool of political control over civil servants. 4. Whistleblower vulnerability: Whistleblowers Protection Act (2014) weakly implemented; several whistleblowers killed or harassed. 5. Ethical relativism: 'Jugaad' culture normalising rule-bending. 6. Gift and hospitality culture: Blurring boundary between gratitude and corruption. 7. Social media and reputation risks: Viral narratives pressuring officials into unethical populist decisions.",
+      committees: "Second ARC 4th Report (2007): Code of Ethics for civil servants; Citizen's Charter; Public Services Law. Hota Committee (2004): Performance management and lateral entry. Vohra Committee (1993): Criminalization of politics — political-criminal nexus. Nolan Committee (UK, 1995): Seven principles of public life — widely adopted in Indian training. Justice B.N. Srikrishna Committee (2017): Data privacy — ethical dimension of digital governance. 14th Finance Commission: Recommended ethics-linked performance grants to states.",
+      ethics: "Ethical frameworks in governance: (1) Deontological (Kant): Civil servants have a duty to follow rules regardless of outcome — rule of law, procedural fairness. (2) Consequentialist (Mill): Governance decisions should maximise public welfare — cost-benefit analysis, outcomes. (3) Virtue Ethics (Aristotle): Character-based integrity; civil servants as 'persons of good character.' (4) Gandhian Trusteeship: Public servant as trustee of public resources, not owner. (5) Rawlsian Justice: Policies must maximise the position of the least-advantaged (Difference Principle). (6) Amartya Sen's Capability Approach: Governance should expand the capabilities/freedoms of citizens, especially the marginalised.",
+      casestudies: "E. Sreedharan (Delhi Metro): Delivered projects on time and within budget in a sector notorious for delays — through transparent tendering, zero tolerance for corruption, and personal integrity. Armstrong Pame (IAS, Manipur): Built 100 km road using crowd-funded ₹86 lakh through social media — demonstrated how ethical motivation can overcome systemic constraints. Ashok Khemka (IAS, Haryana): Cancelled DLF-Vadra land deal despite political pressure — faced 54 transfers in 30 years — symbolises the cost of integrity in governance. T.N. Seshan (CEC): Enforced Model Code of Conduct stringently from 1990–96, transformed Indian elections — showed one person's ethical resolve can transform institutions.",
+      governance: "Institutional mechanisms for ethical governance: (1) Central Vigilance Commission (CVC): Apex integrity institution; issues advisories; superintendence of CBI. (2) Lokpal (appointed 2019): Investigates corruption complaints against PM, Ministers, MPs, and Group A officers. (3) State Lokayuktas: Vary widely in powers; strongest in Karnataka, Maharashtra. (4) CAG: Constitutional audit — recent reports exposed coal block and 2G scams. (5) RTI Act 2005: Citizen's right to information — over 60 lakh applications/year; however, pendency at appellate level is high. (6) Whistle Blowers Protection Act, 2014: Yet to be fully notified; needs strengthening. (7) e-Governance: Reducing discretion and human interface through DBT, PFMS, GeM.",
+      wayforward: "1. Enact a comprehensive Public Services Code binding on all levels of government — specifying rights, duties, and accountability. 2. Strengthen Lokpal by giving it independent investigation machinery rather than dependence on CBI. 3. Implement Whistleblower Protection Act fully with identity protection and witness protection. 4. Annual ethics audit of all ministries/departments by independent panels. 5. Values-based education at LBSNAA, state ATIs — case studies replacing only rule-book training. 6. Public disclosure of civil servants' assets and liabilities — digital registry. 7. 360-degree performance appraisal for senior officers including citizen feedback. 8. Mission Karmayogi: Scale iGOT platform to 20 lakh civil servants by 2025.",
+      conclusion: "Ethics in governance is not a constraint on effective administration — it is its foundation. The corruption of public office is ultimately the corruption of public trust, and no development can be sustainable without that trust. India's transformational aspirations — inclusive growth, Viksit Bharat, social justice — can only be realised through a civil service that embodies Mahatma Gandhi's ideal of the 'last person test.' As Kautilya observed in the Arthashastra: 'Of all the forms of incompetence, moral incompetence is the greatest.'"
+    }
+  },
+  "5": {
+    topic: "Digital India Mission",
+    gs: "gs2",
+    date: "2024-11-01",
+    wordCount: 2560,
+    sections: {
+      definition: "Digital India is a flagship programme of the Government of India launched on July 1, 2015, aimed at transforming India into a 'Digitally Empowered Society and Knowledge Economy.' It rests on three core pillars: (1) Digital Infrastructure as a Utility to Every Citizen — broadband, mobile connectivity, public internet access; (2) Governance and Services on Demand — integrated and interoperable e-services; (3) Digital Empowerment of Citizens — digital literacy, digital resources in Indian languages. Underlying it is the JAM Trinity (Jan Dhan–Aadhaar–Mobile), which enables direct and verifiable government-to-citizen (G2C) service delivery.",
+      background: "India's digital journey began with the IT Act, 2000 (legal recognition of e-records and digital signatures). National e-Governance Plan (NeGP, 2006) set up 27 Mission Mode Projects including e-Courts, e-Procurement, and MCA-21. The Unique Identification Authority of India (UIDAI) was set up in 2009; Aadhaar enrolled its first beneficiary in 2010. The National Optical Fibre Network (NOFN), later BharatNet, was conceived in 2011 to connect 2.5 lakh gram panchayats. By 2014, India had 250 million internet users; by 2024, this crossed 90 crore — the world's 2nd largest internet population.",
+      context: "Digital India has produced landmark outcomes: (1) UPI processed 16.6 billion transactions worth ₹23.5 lakh crore in March 2025 — world's largest real-time payment network. (2) Aadhaar has 1.35 billion enrollees — world's largest biometric identity system. (3) BharatNet connected 2.14 lakh gram panchayats (Phase I & II); Phase III targeting remaining 1.04 lakh GPs. (4) ONDC (Open Network for Digital Commerce) transacting 8 million orders/day by mid-2024 — democratising e-commerce beyond Amazon/Flipkart. (5) India is 3rd largest startup ecosystem globally (1.12 lakh DPIIT-recognised startups, 114 unicorns). (6) GeM portal: ₹4 lakh crore in government procurement by 2024.",
+      constitution: "Constitutional basis: Article 19(1)(a) — Right to freedom of expression includes the right to access the internet (Kerala HC, Faheema Shirin case 2019; upheld by SC). Article 21 — Right to Privacy as fundamental right (K.S. Puttaswamy v. Union of India, 2017, 9-judge bench) underpins data protection framework. Article 19(2): Reasonable restrictions on internet/speech permissible — Section 69A IT Act for website blocking. Article 246A (GST Amendment, 2016): Digital infrastructure for GST Network (GSTN) — a constitutional underpinning for digital taxation.",
+      schemes: "Key schemes under Digital India umbrella: (1) BharatNet: ₹61,109 crore; 2.5 lakh GP connectivity target. (2) PM Wani: Public Wi-Fi network through PDOAs (Public Data Office Aggregators) — 1.5 crore Wi-Fi hotspots by 2025. (3) DigiLocker: 35 crore registered users; 600+ document issuers; 6 billion documents issued. (4) PMGDISHA (PM Gramin Digital Saksharta Abhiyan): 6 crore rural citizens trained in digital literacy. (5) Common Service Centres (CSC): 5.5 lakh CSCs as digital service delivery points in every panchayat. (6) National Digital Health Mission (Ayushman Bharat Digital Mission): Health IDs for 53 crore beneficiaries. (7) e-Courts: 18,735 courts computerised; 21 crore case records online.",
+      data: "Key data points: Internet users: 90 crore (Jan 2025), rural internet penetration 40%. Smartphone users: 84 crore (GSMA 2024). UPI: ₹200+ lakh crore annual transactions (2024–25). Aadhaar authentication: 75 billion+ authentications since inception. DigiLocker: 35 crore users, 6 billion documents. Startups: 1.12 lakh DPIIT-recognised; 114 unicorns (highest after USA, China). IT/BPM industry: $254 billion (FY24), employing 57 lakh professionals. Direct Benefit Transfer (DBT): ₹6.3 lakh crore saved from leakage since 2013 (MoF). India's digital economy: 10% of GDP (2024), target 20% by 2026.",
+      challenges: "1. Digital divide: Rural-urban internet gap; women internet users 33% vs 57% men; only 31% rural women use smartphones. 2. Cybersecurity: India 3rd most attacked nation; CERT-In handled 13.91 lakh cyber incidents in 2022. 3. Data privacy: Digital Personal Data Protection Act (DPDPA) 2023 enacted but rules awaited; consent fatigue and data breaches (CoWIN, Aadhaar leaks). 4. Digital illiteracy: Only 38% Indians digitally literate (NSSO 2021). 5. Platform concentration: WhatsApp (500 million users), Google, Meta control critical digital infrastructure — sovereignty concerns. 6. AI/deepfake risks: Misinformation, electoral manipulation, voice cloning. 7. Last-mile connectivity: BharatNet operational challenges — dark fibre, O&M failures in remote areas.",
+      legal: "IT Act, 2000 (amended 2008): Legal framework for e-commerce, cybercrimes (Sec 66 — hacking; Sec 66C — identity theft; Sec 67 — obscene content). IT (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021: Accountability of social media platforms >50 lakh users — grievance officer, traceability of messages. Digital Personal Data Protection Act, 2023: Consent-based processing, Data Fiduciaries and Data Principals, Data Protection Board. Aadhaar Act, 2016: Regulates use and storage of biometric data. CERT-In Rules (2022): 6-hour breach reporting mandate; VPN providers must log user data.",
+      intl: "Estonia e-Residency: 20% of GDP from digital services; 99% government services online — global benchmark India references for DigiLocker and e-governance. Singapore Smart Nation: NDI (National Digital Identity), SGQR (unified QR code) — comparable to India Stack. European Union GDPR (2018): Gold standard for data protection — India's DPDPA draws heavily from it. African Union AU Data Policy Framework: India's Digital Public Infrastructure model being exported — NPCI International operating UPI in 9 countries. G20 Digital Economy Taskforce (India Presidency, 2023): New Delhi Declaration endorsed DPI as global public good.",
+      governance: "Institutional architecture: Ministry of Electronics and IT (MeitY) — nodal ministry. Digital India Corporation (formerly NISG): Implements Digital India initiatives. UIDAI: Manages Aadhaar. NPCI: Operates UPI, RuPay, FASTag, NETC. TRAI: Regulates telecom including broadband quality. CERT-In: Cyber incident response. Data Protection Board: Under DPDPA 2023 (to be constituted). India Stack (open API ecosystem): Aadhaar API, UPI, DigiLocker, eSign, Account Aggregator — a layered DPI architecture enabling private sector innovation on public rails.",
+      wayforward: "1. Implement DPDPA rules urgently — notify Data Protection Board to give teeth to privacy rights. 2. Expand BharatNet Phase III with a performance-based O&M framework (lessons from Phase I/II failures). 3. National AI Mission: ₹10,372 crore outlay — establish AI-ready data governance and safety frameworks. 4. Digital Rupee (e₹): Scale CBDC pilot from 1 million to 10 million users; enable offline use for Tier 3–4 cities. 5. Semiconductor Mission: ₹76,000 crore PLI to achieve chip self-sufficiency — reduce import dependence. 6. Multilingual digital content: Only 8% of Indian content in 22 scheduled languages — expand Bhashini AI translation. 7. Cybersecurity workforce: Train 5 lakh cybersecurity professionals by 2028 to meet demand.",
+      conclusion: "Digital India has fundamentally altered the citizen-state relationship — from an opaque, rent-seeking system to one of increasing transparency and accountability. The JAM Trinity, UPI, and DigiLocker have created a digital infrastructure that rivals the best in the world. Yet the promise of a truly inclusive digital India remains unfulfilled as long as the digital divide persists along lines of gender, geography, and economic class. The next phase must focus on digital equity as much as digital capability — ensuring that the transformational power of technology reaches the last person in the last village, consistent with Mahatma Gandhi's Talisman and the Constitutional promise of social, economic, and political justice."
+    }
   }
 };
 
 export const SAMPLE_PDFS = [
-  { id: "1", name: "Economic Survey 2023-24.pdf",          size: "18.4 MB", pages: 312, chunks: 1842, status: "indexed",    date: "2024-11-01" },
-  { id: "2", name: "ARC 2nd Report - Ethics.pdf",          size: "4.2 MB",  pages: 148, chunks: 724,  status: "indexed",    date: "2024-11-02" },
-  { id: "3", name: "India Year Book 2024.pdf",             size: "22.1 MB", pages: 480, chunks: 2940, status: "indexed",    date: "2024-11-03" },
-  { id: "4", name: "NCERT Geography Class 11.pdf",         size: "8.7 MB",  pages: 204, chunks: 1120, status: "indexed",    date: "2024-11-05" },
-  { id: "5", name: "PIB Compilation Nov 2024.pdf",         size: "3.1 MB",  pages: 86,  chunks: 492,  status: "processing", date: "2024-11-11" },
-  { id: "6", name: "Vision IAS Current Affairs Oct.pdf",   size: "6.8 MB",  pages: 198, chunks: 0,    status: "queued",     date: "2024-11-12" },
+  { id: "1", name: "Economic Survey 2023-24.pdf",          ext: "PDF",  icon: "📄", size: "18.4 MB", pages: 312, chunks: 1842, status: "indexed", date: "2024-11-01" },
+  { id: "2", name: "ARC 2nd Report - Ethics.pdf",          ext: "PDF",  icon: "📄", size: "4.2 MB",  pages: 148, chunks: 724,  status: "indexed", date: "2024-11-02" },
+  { id: "3", name: "India Year Book 2024.pdf",             ext: "PDF",  icon: "📄", size: "22.1 MB", pages: 480, chunks: 2940, status: "indexed", date: "2024-11-03" },
+  { id: "4", name: "NCERT Geography Class 11.pdf",         ext: "PDF",  icon: "📄", size: "8.7 MB",  pages: 204, chunks: 1120, status: "indexed", date: "2024-11-05" },
+  { id: "5", name: "PIB Compilation Nov 2024.pdf",         ext: "PDF",  icon: "📄", size: "3.1 MB",  pages: 44,  chunks: 279,  status: "indexed", date: "2024-11-11" },
+  { id: "6", name: "Vision IAS Current Affairs Oct.pdf",   ext: "PDF",  icon: "📄", size: "6.8 MB",  pages: 98,  chunks: 623,  status: "indexed", date: "2024-11-12" },
 ];
 
 export const SAMPLE_CURRENT_AFFAIRS = [
@@ -1393,3 +1499,871 @@ export const ANSWER_FRAMEWORKS = [
     example: "Do you agree that Article 356 (President's Rule) has been misused more than it has been legitimately used? Argue.",
   },
 ];
+
+// ── TOPIC CLASSIFICATION SYSTEM ──────────────────────────────────────────────
+// Maps topic categories to UPSC-relevant note sections.
+// Used by NoteGenerator to show only the sections that make sense for a topic.
+//
+// Each section has:
+//   id            — snake_case key matching NOTE_SECTIONS ids where possible
+//   label         — display name
+//   icon          — single emoji
+//   hint          — ≤15 words describing what content to write
+//   pdfKeyPhrases — 5-6 short phrases to grep in PDF text for this section
+
+export const TOPIC_CATEGORIES = {
+
+  // ── 1. GEOGRAPHY ────────────────────────────────────────────────────────────
+  // Corridors, passes, rivers, regions, plateaus, islands, straits, lakes
+  GEOGRAPHY: {
+    label: "Geography",
+    gs: ["gs1", "gs3"],
+    matchKeywords: [
+      "corridor", "pass", "ghats", "plateau", "peninsula", "strait", "canal",
+      "river", "lake", "delta", "basin", "bay", "gulf", "island", "archipelago",
+      "range", "valley", "plain", "desert", "glacier", "waterfall", "port",
+      "siliguri", "doklam", "palk", "deccan", "thar", "brahmaputra", "himalaya",
+      "western ghats", "eastern ghats", "sundarbans", "rann", "lakshadweep",
+      "andaman", "nicobar", "konkan", "coromandel", "malabar"
+    ],
+    sections: [
+      {
+        id: "geo_overview",
+        label: "Location & Overview",
+        icon: "🗺️",
+        hint: "Coordinates, extent, bordering states/countries, basic geographic character.",
+        pdfKeyPhrases: ["located at", "situated in", "bordered by", "extends from", "geographic coordinates"]
+      },
+      {
+        id: "geo_physical",
+        label: "Physical Features",
+        icon: "⛰️",
+        hint: "Terrain, elevation, landforms, soil type, drainage pattern, climate zone.",
+        pdfKeyPhrases: ["topography", "elevation", "soil type", "drainage", "landform", "climate zone"]
+      },
+      {
+        id: "geo_strategic",
+        label: "Strategic Significance",
+        icon: "🛡️",
+        hint: "Military, trade, connectivity importance; chokepoint or access value.",
+        pdfKeyPhrases: ["strategic importance", "trade route", "military significance", "connectivity", "chokepoint"]
+      },
+      {
+        id: "geo_ecology",
+        label: "Ecology & Biodiversity",
+        icon: "🌿",
+        hint: "Flora, fauna, protected areas, wetlands, ecological sensitivity.",
+        pdfKeyPhrases: ["biodiversity", "endemic species", "wildlife sanctuary", "national park", "wetland", "ecosystem"]
+      },
+      {
+        id: "geo_economy",
+        label: "Economic Importance",
+        icon: "💰",
+        hint: "Agriculture, minerals, fisheries, tourism, industrial activity in the region.",
+        pdfKeyPhrases: ["natural resources", "economic activity", "agriculture", "mineral deposits", "fisheries", "tourism"]
+      },
+      {
+        id: "geo_issues",
+        label: "Challenges & Threats",
+        icon: "⚠️",
+        hint: "Environmental degradation, encroachment, climate vulnerability, disputes.",
+        pdfKeyPhrases: ["threats", "degradation", "dispute", "encroachment", "climate risk", "flood prone"]
+      },
+      {
+        id: "geo_governance",
+        label: "Governance & Policy",
+        icon: "🏛️",
+        hint: "Relevant laws, missions, tribunals, international agreements for the region.",
+        pdfKeyPhrases: ["tribunal", "authority", "policy", "mission", "water sharing", "interstate"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Conservation, development, connectivity, and governance recommendations.",
+        pdfKeyPhrases: ["recommendation", "way forward", "solution", "conservation plan", "sustainable development"]
+      }
+    ]
+  },
+
+  // ── 2. HISTORY ───────────────────────────────────────────────────────────────
+  // Empires, dynasties, movements, freedom struggle, personalities, art & culture
+  HISTORY: {
+    label: "History",
+    gs: ["gs1"],
+    matchKeywords: [
+      "empire", "dynasty", "kingdom", "sultanate", "mughal", "maratha", "vijayanagara",
+      "chola", "gupta", "maurya", "delhi sultanate", "british raj", "colonial",
+      "freedom struggle", "independence movement", "revolt", "uprising", "war",
+      "battle", "partition", "satyagraha", "non-cooperation", "quit india",
+      "nationalism", "gandhi", "nehru", "ambedkar", "bhagat singh", "bose",
+      "ancient", "medieval", "modern history", "civilization", "culture",
+      "art", "architecture", "sculpture", "painting", "literature", "philosophy",
+      "bhakti", "sufi", "reform movement", "renaissance", "personality"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Introduction & Context",
+        icon: "📖",
+        hint: "Who/what/when — brief identification, time period, geographic setting.",
+        pdfKeyPhrases: ["introduction", "founded", "established", "period", "century", "origin"]
+      },
+      {
+        id: "background",
+        label: "Rise & Background",
+        icon: "🕰️",
+        hint: "Political, social, economic conditions that enabled emergence; founding events.",
+        pdfKeyPhrases: ["rise", "foundation", "origins", "causes", "background", "early history"]
+      },
+      {
+        id: "hist_political",
+        label: "Political & Administrative History",
+        icon: "👑",
+        hint: "Rulers, succession, administrative system, territorial expansion or decline.",
+        pdfKeyPhrases: ["administration", "ruler", "governance", "territorial expansion", "succession", "bureaucracy"]
+      },
+      {
+        id: "hist_socioeco",
+        label: "Economy & Society",
+        icon: "⚖️",
+        hint: "Trade, agriculture, taxation, social hierarchy, position of women and lower castes.",
+        pdfKeyPhrases: ["trade", "economy", "social structure", "caste", "taxation", "agriculture"]
+      },
+      {
+        id: "casestudies",
+        label: "Art, Architecture & Culture",
+        icon: "🏛️",
+        hint: "Monuments, literary works, religious developments, scientific contributions.",
+        pdfKeyPhrases: ["architecture", "temple", "art", "literature", "religion", "scientific"]
+      },
+      {
+        id: "challenges",
+        label: "Decline & Fall",
+        icon: "📉",
+        hint: "Internal contradictions, external invasions, economic collapse, succession failures.",
+        pdfKeyPhrases: ["decline", "fall", "collapse", "weaknesses", "invasions", "disintegration"]
+      },
+      {
+        id: "impacts",
+        label: "Legacy & Significance",
+        icon: "💥",
+        hint: "Long-term impact on culture, polity, economy; what India inherited.",
+        pdfKeyPhrases: ["legacy", "significance", "contributions", "influence", "impact", "modern relevance"]
+      },
+      {
+        id: "conclusion",
+        label: "Conclusion",
+        icon: "🎯",
+        hint: "UPSC-relevant synthesis: lessons, contemporary resonance, examiner takeaway.",
+        pdfKeyPhrases: ["conclusion", "contemporary relevance", "lessons", "significance today"]
+      }
+    ]
+  },
+
+  // ── 3. SECURITY ──────────────────────────────────────────────────────────────
+  // Terrorism, insurgency, cyber, border, internal security, defence
+  SECURITY: {
+    label: "Security",
+    gs: ["gs3"],
+    matchKeywords: [
+      "terrorism", "terrorist", "insurgency", "naxal", "maoist", "ltte",
+      "cyber security", "cyber attack", "hacking", "border security", "bsf",
+      "internal security", "counter-terrorism", "radicalization", "militancy",
+      "jem", "let", "northeast insurgency", "narco-terrorism", "money laundering",
+      "organised crime", "human trafficking", "fake currency", "proxy war",
+      "left wing extremism", "north east", "j&k", "kashmir", "defence"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Definition",
+        icon: "📖",
+        hint: "Define the threat; legal/statutory definitions; distinguish from related concepts.",
+        pdfKeyPhrases: ["definition", "terrorism", "insurgency", "legal definition", "uapa", "concept"]
+      },
+      {
+        id: "background",
+        label: "Historical Background",
+        icon: "🕰️",
+        hint: "Origin, evolution, key events/incidents that define the current threat.",
+        pdfKeyPhrases: ["history", "origin", "evolution", "incidents", "timeline", "background"]
+      },
+      {
+        id: "causes",
+        label: "Causes & Root Factors",
+        icon: "🔍",
+        hint: "Socioeconomic deprivation, ideology, state failure, external support, grievances.",
+        pdfKeyPhrases: ["causes", "root causes", "factors", "grievances", "unemployment", "ideology"]
+      },
+      {
+        id: "sec_agencies",
+        label: "Security Architecture",
+        icon: "🛡️",
+        hint: "NIA, NSG, CRPF, IB, RAW, state police — roles, gaps, coordination mechanisms.",
+        pdfKeyPhrases: ["NIA", "NSG", "CRPF", "intelligence", "security forces", "coordination"]
+      },
+      {
+        id: "legal",
+        label: "Legal Framework",
+        icon: "📋",
+        hint: "UAPA, NSA, AFSPA, IT Act, NIA Act — powers, safeguards, controversies.",
+        pdfKeyPhrases: ["UAPA", "AFSPA", "NSA", "NIA Act", "legislation", "legal framework"]
+      },
+      {
+        id: "challenges",
+        label: "Challenges",
+        icon: "⚠️",
+        hint: "Governance deficits, cross-border sanctuary, radicalisation online, human rights.",
+        pdfKeyPhrases: ["challenges", "cross-border", "radicalisation", "human rights concerns", "safe havens"]
+      },
+      {
+        id: "intl",
+        label: "International Dimensions",
+        icon: "🌐",
+        hint: "State sponsors, FATF, UN counter-terrorism conventions, bilateral agreements.",
+        pdfKeyPhrases: ["FATF", "UN convention", "bilateral", "state sponsor", "cross-border", "international"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "SMART policing, de-radicalisation, development approach, intelligence reform.",
+        pdfKeyPhrases: ["de-radicalisation", "police reform", "development", "way forward", "recommendation"]
+      }
+    ]
+  },
+
+  // ── 4. ENVIRONMENT ───────────────────────────────────────────────────────────
+  // Climate, biodiversity, pollution, forests, oceans, disasters, wildlife
+  ENVIRONMENT: {
+    label: "Environment",
+    gs: ["gs3"],
+    matchKeywords: [
+      "climate change", "global warming", "biodiversity", "species", "wildlife",
+      "forest", "deforestation", "pollution", "air quality", "water pollution",
+      "plastic", "waste", "ocean", "marine", "coral reef", "mangrove",
+      "wetland", "disaster", "flood", "drought", "cyclone", "earthquake",
+      "ozone", "greenhouse gas", "carbon", "emissions", "renewable energy",
+      "solar", "wind energy", "electric vehicle", "sustainable", "ecology",
+      "tiger", "elephant", "project tiger", "biosphere reserve", "ramsar",
+      "paris agreement", "cop", "ndma", "ngt"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Significance",
+        icon: "📖",
+        hint: "Define the issue; why it matters for India's ecology and economy.",
+        pdfKeyPhrases: ["definition", "significance", "concept", "ecological importance", "overview"]
+      },
+      {
+        id: "background",
+        label: "Historical Context",
+        icon: "🕰️",
+        hint: "Evolution of the issue; key milestones, treaties, policy developments.",
+        pdfKeyPhrases: ["history", "evolution", "milestones", "Stockholm", "Rio", "UNFCCC", "timeline"]
+      },
+      {
+        id: "causes",
+        label: "Causes",
+        icon: "🔍",
+        hint: "Anthropogenic and natural drivers; sectoral emission sources; policy failures.",
+        pdfKeyPhrases: ["causes", "drivers", "anthropogenic", "emissions", "deforestation", "pollution sources"]
+      },
+      {
+        id: "impacts",
+        label: "Impacts",
+        icon: "💥",
+        hint: "On ecosystems, agriculture, water, health, economy, vulnerable communities.",
+        pdfKeyPhrases: ["impacts", "consequences", "effect on", "agriculture", "health impact", "economic loss"]
+      },
+      {
+        id: "data",
+        label: "Data & Statistics",
+        icon: "📊",
+        hint: "IPCC, MoEF, FSI, CPCB, NCRB, NGT data; India's global ranking.",
+        pdfKeyPhrases: ["statistics", "data", "percentage", "square kilometres", "global ranking", "index"]
+      },
+      {
+        id: "legal",
+        label: "Legal & Policy Framework",
+        icon: "📋",
+        hint: "EPA, Forest Act, Wildlife Act, NGT, EIA, constitutional provisions.",
+        pdfKeyPhrases: ["Environment Protection Act", "Forest Conservation Act", "EIA", "NGT", "Wildlife Act", "constitutional"]
+      },
+      {
+        id: "intl",
+        label: "International Frameworks",
+        icon: "🌐",
+        hint: "Paris Agreement, CBD, CITES, Ramsar, UNFCCC, COP outcomes, India's commitments.",
+        pdfKeyPhrases: ["Paris Agreement", "CBD", "CITES", "Ramsar", "COP", "NDC", "international treaty"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Nature-based solutions, technology, policy reforms, international cooperation.",
+        pdfKeyPhrases: ["way forward", "solution", "recommendation", "nature-based", "green technology", "policy reform"]
+      }
+    ]
+  },
+
+  // ── 5. ECONOMY ───────────────────────────────────────────────────────────────
+  // Sectors, trade, fiscal policy, agriculture, digital economy, banking, MSMEs
+  ECONOMY: {
+    label: "Economy",
+    gs: ["gs3"],
+    matchKeywords: [
+      "gdp", "inflation", "fiscal", "monetary policy", "rbi", "budget",
+      "taxation", "gst", "agriculture", "food security", "pds", "msp",
+      "banking", "npa", "credit", "microfinance", "insurance",
+      "trade", "export", "import", "wto", "fta", "make in india",
+      "startup", "msme", "industry", "manufacturing", "pli",
+      "digital economy", "upi", "fintech", "gig economy", "unemployment",
+      "labour", "poverty", "inequality", "human development", "infrastructure",
+      "energy", "oil", "coal", "renewable", "logistics", "supply chain"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Overview",
+        icon: "📖",
+        hint: "Define the economic issue/sector; its share in GDP and national importance.",
+        pdfKeyPhrases: ["definition", "overview", "GDP contribution", "sector overview", "economic significance"]
+      },
+      {
+        id: "background",
+        label: "Evolution & Policy History",
+        icon: "🕰️",
+        hint: "Pre-liberalisation to present; key policy shifts; Committees and commissions.",
+        pdfKeyPhrases: ["history", "evolution", "liberalisation", "five-year plan", "policy reform", "committee"]
+      },
+      {
+        id: "data",
+        label: "Data & Statistics",
+        icon: "📊",
+        hint: "GDP share, growth rate, employment, trade figures, India's global rank.",
+        pdfKeyPhrases: ["GDP", "growth rate", "employment", "export", "billion", "crore", "per cent"]
+      },
+      {
+        id: "schemes",
+        label: "Government Schemes & Policies",
+        icon: "🏛️",
+        hint: "Central and state schemes, PLI, budget allocations, regulatory reforms.",
+        pdfKeyPhrases: ["scheme", "PLI", "mission", "policy", "budget allocation", "reform"]
+      },
+      {
+        id: "challenges",
+        label: "Challenges",
+        icon: "⚠️",
+        hint: "Structural problems, market failures, infrastructure gaps, global headwinds.",
+        pdfKeyPhrases: ["challenges", "problems", "constraints", "barriers", "market failure", "structural issues"]
+      },
+      {
+        id: "intl",
+        label: "Global Context",
+        icon: "🌐",
+        hint: "WTO, FTAs, global value chains, India's position vs peers, IMF/World Bank data.",
+        pdfKeyPhrases: ["WTO", "FTA", "global", "world bank", "IMF", "international trade", "global ranking"]
+      },
+      {
+        id: "committees",
+        label: "Committees & Reforms",
+        icon: "👥",
+        hint: "Key committee recommendations; pending reforms; regulatory changes needed.",
+        pdfKeyPhrases: ["committee", "task force", "reform", "recommendation", "panel", "commission"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Supply-side reforms, demand stimulus, technology adoption, global integration.",
+        pdfKeyPhrases: ["way forward", "recommendation", "reform agenda", "solution", "policy suggestion"]
+      }
+    ]
+  },
+
+  // ── 6. POLITY ────────────────────────────────────────────────────────────────
+  // Constitutional bodies, laws, electoral reforms, federalism, rights, governance
+  POLITY: {
+    label: "Polity",
+    gs: ["gs2"],
+    matchKeywords: [
+      "constitution", "article", "amendment", "parliament", "lok sabha", "rajya sabha",
+      "president", "governor", "prime minister", "cabinet", "council of ministers",
+      "supreme court", "high court", "judiciary", "election commission",
+      "federal", "federalism", "panchayati raj", "urban local body",
+      "fundamental rights", "dpsp", "fundamental duties",
+      "constitutional body", "statutory body", "lokpal", "cag", "upsc",
+      "electoral reform", "anti-defection", "right to information",
+      "lokayukta", "ombudsman", "civil service", "ias", "bureaucracy",
+      "cbi", "enforcement directorate", "one nation one election",
+      "delimitation", "reservation", "obc", "sc", "st"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Constitutional Basis",
+        icon: "📖",
+        hint: "Define the institution/concept; founding Article(s); original intent.",
+        pdfKeyPhrases: ["Article", "constitutional provision", "definition", "statutory basis", "established under"]
+      },
+      {
+        id: "constitution",
+        label: "Constitutional Provisions",
+        icon: "⚖️",
+        hint: "Specific Articles, Parts, Schedules; relevant Amendments; Constituent Assembly debates.",
+        pdfKeyPhrases: ["Article", "Part III", "Part IV", "Schedule", "Amendment", "Constituent Assembly"]
+      },
+      {
+        id: "legal",
+        label: "Legal Framework",
+        icon: "📋",
+        hint: "Enabling legislation, rules, regulations; evolution through Acts and Amendments.",
+        pdfKeyPhrases: ["Act", "Rules", "legislation", "amendment", "statutory", "law"]
+      },
+      {
+        id: "data",
+        label: "Performance & Data",
+        icon: "📊",
+        hint: "Key statistics: pending cases, election figures, seat composition, budget.",
+        pdfKeyPhrases: ["statistics", "data", "pending", "composition", "seats", "percentage"]
+      },
+      {
+        id: "judgements",
+        label: "SC / HC Judgements",
+        icon: "🏛️",
+        hint: "Landmark cases that shaped interpretation; ratio decidendi; recent orders.",
+        pdfKeyPhrases: ["Supreme Court", "judgement", "case", "held", "ratio", "constitutional bench"]
+      },
+      {
+        id: "challenges",
+        label: "Issues & Challenges",
+        icon: "⚠️",
+        hint: "Structural defects, political interference, implementation gaps, delays.",
+        pdfKeyPhrases: ["challenges", "issues", "criticism", "concern", "problem", "deficiency"]
+      },
+      {
+        id: "committees",
+        label: "Committee Recommendations",
+        icon: "👥",
+        hint: "2nd ARC, Law Commission, Sarkaria, Punchhi, Venkatachaliah — key reforms.",
+        pdfKeyPhrases: ["2nd ARC", "Law Commission", "Sarkaria", "Punchhi", "committee", "recommendation"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Constitutional/legislative reforms; global best practices; institutional fixes.",
+        pdfKeyPhrases: ["reform", "way forward", "recommendation", "legislative change", "solution"]
+      }
+    ]
+  },
+
+  // ── 7. SCIENCE_TECH ──────────────────────────────────────────────────────────
+  // AI, space, nuclear, biotech, digital, defence technology, health tech
+  SCIENCE_TECH: {
+    label: "Science & Technology",
+    gs: ["gs3"],
+    matchKeywords: [
+      "artificial intelligence", "ai", "machine learning", "deep learning",
+      "space", "isro", "satellite", "chandrayaan", "gaganyaan", "launch vehicle",
+      "nuclear", "atomic energy", "reactor", "thorium",
+      "biotechnology", "genome", "crispr", "vaccine", "drug",
+      "semiconductor", "chip", "5g", "quantum", "nanotechnology",
+      "drone", "uav", "defence technology", "missile", "drdo",
+      "internet of things", "iot", "blockchain", "digital technology",
+      "supercomputer", "cloud", "data centre", "electric vehicle",
+      "green hydrogen", "carbon capture", "gene editing", "stem cell"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Science",
+        icon: "📖",
+        hint: "What it is; underlying science; how the technology works.",
+        pdfKeyPhrases: ["definition", "concept", "technology", "how it works", "mechanism", "overview"]
+      },
+      {
+        id: "background",
+        label: "India's Journey",
+        icon: "🕰️",
+        hint: "History of India's programme; key milestones; institutional evolution.",
+        pdfKeyPhrases: ["India's", "history", "programme", "milestones", "ISRO", "DRDO", "evolution"]
+      },
+      {
+        id: "data",
+        label: "Current Status & Data",
+        icon: "📊",
+        hint: "India's achievements, global ranking, investment, capacity data.",
+        pdfKeyPhrases: ["current status", "achievements", "capacity", "investment", "global ranking", "data"]
+      },
+      {
+        id: "st_applications",
+        label: "Applications & Use Cases",
+        icon: "🔬",
+        hint: "Defence, agriculture, health, governance, industry applications in India.",
+        pdfKeyPhrases: ["application", "use case", "deployed", "agriculture", "health", "defence application"]
+      },
+      {
+        id: "challenges",
+        label: "Challenges",
+        icon: "⚠️",
+        hint: "R&D gaps, patent deficits, brain drain, import dependence, ethical risks.",
+        pdfKeyPhrases: ["challenges", "R&D", "patent", "brain drain", "import dependence", "ethical"]
+      },
+      {
+        id: "intl",
+        label: "Global Landscape",
+        icon: "🌐",
+        hint: "Global leaders, treaties (NPT, MTCR, Wassenaar), tech geopolitics, India's position.",
+        pdfKeyPhrases: ["global", "USA", "China", "geopolitics", "treaty", "technology competition", "leader"]
+      },
+      {
+        id: "schemes",
+        label: "Government Initiatives",
+        icon: "🏛️",
+        hint: "Missions, PLI schemes, national programmes, budget outlays.",
+        pdfKeyPhrases: ["mission", "PLI", "scheme", "national programme", "budget", "government initiative"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "R&D investment, public-private partnerships, ethical governance, skilling.",
+        pdfKeyPhrases: ["way forward", "R&D", "investment", "policy", "ethical governance", "recommendation"]
+      }
+    ]
+  },
+
+  // ── 8. SOCIETY ───────────────────────────────────────────────────────────────
+  // Women, tribals, caste, poverty, health, education, migrants, minorities
+  SOCIETY: {
+    label: "Society",
+    gs: ["gs1", "gs2"],
+    matchKeywords: [
+      "women", "gender", "feminist", "mahila", "girl child", "dowry",
+      "tribal", "adivasi", "schedule tribe", "forest rights", "displacement",
+      "caste", "dalit", "obc", "scheduled caste", "discrimination",
+      "poverty", "inequality", "hunger", "malnutrition", "food security",
+      "health", "mental health", "suicide", "neet", "infant mortality",
+      "education", "literacy", "school dropout", "higher education",
+      "migrant", "migration", "labour migration", "diaspora",
+      "minority", "communal", "secularism", "diversity",
+      "urbanisation", "slum", "homelessness", "social exclusion",
+      "elderly", "disability", "lgbtq", "child labour", "trafficking"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Significance",
+        icon: "📖",
+        hint: "Define the social group/issue; constitutional and legal status.",
+        pdfKeyPhrases: ["definition", "significance", "constitutional status", "vulnerable group", "overview"]
+      },
+      {
+        id: "background",
+        label: "Historical Context",
+        icon: "🕰️",
+        hint: "Social history; reform movements; colonial and post-independence evolution.",
+        pdfKeyPhrases: ["history", "social reform", "colonial", "movement", "evolution", "background"]
+      },
+      {
+        id: "data",
+        label: "Data & Statistics",
+        icon: "📊",
+        hint: "NFHS, Census, NCRB, NSSO, HDI sub-indices; state-wise variation.",
+        pdfKeyPhrases: ["NFHS", "census", "NCRB", "statistics", "percentage", "ranking", "data"]
+      },
+      {
+        id: "causes",
+        label: "Root Causes",
+        icon: "🔍",
+        hint: "Structural inequality, patriarchy, caste, poverty, policy failure.",
+        pdfKeyPhrases: ["causes", "root causes", "patriarchy", "structural", "discrimination", "poverty"]
+      },
+      {
+        id: "challenges",
+        label: "Challenges",
+        icon: "⚠️",
+        hint: "Persisting gaps, implementation failures, social resistance, digital divide.",
+        pdfKeyPhrases: ["challenges", "barriers", "gaps", "resistance", "implementation", "issues"]
+      },
+      {
+        id: "schemes",
+        label: "Government Schemes",
+        icon: "🏛️",
+        hint: "Central and state welfare schemes; convergence; DBT; coverage data.",
+        pdfKeyPhrases: ["scheme", "mission", "welfare", "DBT", "coverage", "beneficiary"]
+      },
+      {
+        id: "casestudies",
+        label: "Case Studies",
+        icon: "📌",
+        hint: "Successful models — Kudumbashree, SHGs, SEWA, state innovations.",
+        pdfKeyPhrases: ["case study", "model", "success story", "initiative", "example", "best practice"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Structural reform, empowerment, social norms change, convergence of schemes.",
+        pdfKeyPhrases: ["way forward", "reform", "empowerment", "recommendation", "social change", "solution"]
+      }
+    ]
+  },
+
+  // ── 9. INTERNATIONAL ─────────────────────────────────────────────────────────
+  // Bilateral relations, regional groupings, treaties, IR issues
+  INTERNATIONAL: {
+    label: "International Relations",
+    gs: ["gs2"],
+    matchKeywords: [
+      "bilateral", "india-china", "india-pakistan", "india-usa", "india-russia",
+      "india-bangladesh", "india-nepal", "india-sri lanka", "india-myanmar",
+      "india-france", "india-germany", "saarc", "bimstec", "quad", "g20",
+      "brics", "sco", "asean", "un", "wto", "imf", "world bank",
+      "treaty", "agreement", "memorandum", "cooperation", "foreign policy",
+      "neighbour", "neighbourhood first", "act east", "indo-pacific",
+      "international relation", "global south", "diplomacy", "soft power",
+      "non-alignment", "strategic autonomy", "trade war", "sanction"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Overview & Historical Background",
+        icon: "📖",
+        hint: "Brief history of the relationship; when and how it was established.",
+        pdfKeyPhrases: ["history", "establishment", "background", "relationship", "diplomatic ties", "overview"]
+      },
+      {
+        id: "ir_areas",
+        label: "Areas of Cooperation",
+        icon: "🤝",
+        hint: "Trade, defence, energy, connectivity, people-to-people, multilateral cooperation.",
+        pdfKeyPhrases: ["cooperation", "trade", "defence", "bilateral", "agreement", "partnership"]
+      },
+      {
+        id: "ir_disputes",
+        label: "Issues & Disputes",
+        icon: "⚔️",
+        hint: "Territorial disputes, trade friction, historical grievances, unresolved issues.",
+        pdfKeyPhrases: ["dispute", "issue", "friction", "territorial", "concern", "challenge"]
+      },
+      {
+        id: "data",
+        label: "Trade & Economic Data",
+        icon: "📊",
+        hint: "Bilateral trade figures, FDI flows, remittances, investment data.",
+        pdfKeyPhrases: ["trade", "billion", "FDI", "investment", "export", "import", "economic data"]
+      },
+      {
+        id: "ir_strategic",
+        label: "Strategic Significance",
+        icon: "🛡️",
+        hint: "Geopolitical importance; India's strategic interests; regional balance of power.",
+        pdfKeyPhrases: ["strategic", "geopolitical", "significance", "balance of power", "security", "alliance"]
+      },
+      {
+        id: "ir_multilateral",
+        label: "Multilateral Dimensions",
+        icon: "🌐",
+        hint: "Groupings, treaties, UN votes, shared positions on global issues.",
+        pdfKeyPhrases: ["multilateral", "grouping", "UN", "G20", "BRICS", "global forum", "treaty"]
+      },
+      {
+        id: "ir_india",
+        label: "India's Approach & Interests",
+        icon: "🇮🇳",
+        hint: "India's foreign policy stance, Neighbourhood First, Act East, strategic autonomy.",
+        pdfKeyPhrases: ["India's foreign policy", "neighbourhood first", "strategic autonomy", "act east", "India's interest"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Diplomatic initiatives, CBMs, economic cooperation, people-to-people ties.",
+        pdfKeyPhrases: ["way forward", "confidence-building", "initiative", "recommendation", "diplomacy", "solution"]
+      }
+    ]
+  },
+
+  // ── 10. ETHICS ───────────────────────────────────────────────────────────────
+  // Dilemmas, case studies, values, governance ethics, emotional intelligence
+  ETHICS: {
+    label: "Ethics",
+    gs: ["gs4"],
+    matchKeywords: [
+      "ethics", "integrity", "corruption", "probity", "attitude", "aptitude",
+      "emotional intelligence", "civil servant", "public servant",
+      "dilemma", "moral", "values", "virtue", "conscience",
+      "whistle blower", "conflict of interest", "accountability",
+      "transparency", "impartiality", "objectivity", "selflessness",
+      "thinker", "philosopher", "kant", "gandhi", "rawls", "sen",
+      "case study ethics", "governance ethics", "corporate ethics",
+      "social justice", "human rights", "compassion", "empathy"
+    ],
+    sections: [
+      {
+        id: "definition",
+        label: "Concept & Meaning",
+        icon: "📖",
+        hint: "Define the ethical concept; distinguish from adjacent terms.",
+        pdfKeyPhrases: ["definition", "concept", "meaning", "distinguish", "ethics", "integrity"]
+      },
+      {
+        id: "eth_dimensions",
+        label: "Ethical Dimensions",
+        icon: "🔮",
+        hint: "Deontological, consequentialist, virtue ethics, Gandhian, Rawlsian angles.",
+        pdfKeyPhrases: ["deontological", "consequentialist", "virtue ethics", "Kant", "Rawls", "Gandhi", "ethical framework"]
+      },
+      {
+        id: "eth_thinkers",
+        label: "Thinkers & Quotes",
+        icon: "🧠",
+        hint: "Relevant philosophers, their contributions, applicable quotes for answers.",
+        pdfKeyPhrases: ["thinker", "philosopher", "quote", "said", "argued", "contribution", "school of thought"]
+      },
+      {
+        id: "eth_governance",
+        label: "Ethics in Governance",
+        icon: "🏢",
+        hint: "Nolan principles, 2nd ARC, Lokpal, RTI, accountability mechanisms.",
+        pdfKeyPhrases: ["Nolan principles", "2nd ARC", "public servant", "accountability", "probity", "civil servant"]
+      },
+      {
+        id: "casestudies",
+        label: "Case Studies",
+        icon: "📌",
+        hint: "Inspiring civil servants; ethical dilemma scenarios; real incidents.",
+        pdfKeyPhrases: ["case study", "example", "civil servant", "dilemma", "scenario", "officer"]
+      },
+      {
+        id: "eth_issues",
+        label: "Contemporary Issues",
+        icon: "⚠️",
+        hint: "AI ethics, social media ethics, corporate responsibility, bioethics.",
+        pdfKeyPhrases: ["contemporary", "AI ethics", "corporate", "social media", "bioethics", "modern challenge"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Institutional reforms, values education, Mission Karmayogi, ethical codes.",
+        pdfKeyPhrases: ["way forward", "Mission Karmayogi", "reform", "values education", "ethical code", "recommendation"]
+      }
+    ]
+  },
+
+  // ── 11. GENERIC ──────────────────────────────────────────────────────────────
+  // Fallback for topics that don't match a specific category
+  GENERIC: {
+    label: "General",
+    gs: ["gs1", "gs2", "gs3", "gs4"],
+    matchKeywords: [],   // matches everything — used as fallback
+    sections: [
+      {
+        id: "definition",
+        label: "Definition & Overview",
+        icon: "📖",
+        hint: "Formal definition, scope, key concepts; why it matters for UPSC.",
+        pdfKeyPhrases: ["definition", "overview", "concept", "meaning", "significance"]
+      },
+      {
+        id: "background",
+        label: "Background",
+        icon: "🕰️",
+        hint: "Historical evolution, key phases, origins of the current situation.",
+        pdfKeyPhrases: ["history", "background", "evolution", "origin", "development"]
+      },
+      {
+        id: "context",
+        label: "Current Context",
+        icon: "📰",
+        hint: "Recent developments, news peg, current data, why it is in news.",
+        pdfKeyPhrases: ["current", "recent", "2023", "2024", "news", "latest"]
+      },
+      {
+        id: "data",
+        label: "Data & Statistics",
+        icon: "📊",
+        hint: "Key numbers, India's ranking, trend data from credible sources.",
+        pdfKeyPhrases: ["data", "statistics", "percentage", "ranking", "report", "survey"]
+      },
+      {
+        id: "challenges",
+        label: "Challenges",
+        icon: "⚠️",
+        hint: "Major problems, structural gaps, governance failures, global headwinds.",
+        pdfKeyPhrases: ["challenges", "problems", "issues", "barriers", "concern", "failure"]
+      },
+      {
+        id: "causes",
+        label: "Causes",
+        icon: "🔍",
+        hint: "Root causes — structural, historical, economic, institutional, social.",
+        pdfKeyPhrases: ["causes", "reasons", "factors", "roots", "why"]
+      },
+      {
+        id: "impacts",
+        label: "Impacts",
+        icon: "💥",
+        hint: "Economic, social, environmental, security, and governance consequences.",
+        pdfKeyPhrases: ["impact", "consequence", "effect", "outcome", "result"]
+      },
+      {
+        id: "intl",
+        label: "International Best Practices",
+        icon: "🌐",
+        hint: "Global models, country comparisons, international frameworks.",
+        pdfKeyPhrases: ["international", "global", "country", "model", "best practice", "comparison"]
+      },
+      {
+        id: "casestudies",
+        label: "Case Studies",
+        icon: "📌",
+        hint: "Success stories, pilot projects, state-level innovations.",
+        pdfKeyPhrases: ["case study", "example", "model", "success story", "pilot"]
+      },
+      {
+        id: "wayforward",
+        label: "Way Forward",
+        icon: "✅",
+        hint: "Policy recommendations, short/medium/long-term solutions, SDG links.",
+        pdfKeyPhrases: ["way forward", "recommendation", "solution", "reform", "suggestion"]
+      },
+      {
+        id: "conclusion",
+        label: "Conclusion",
+        icon: "🎯",
+        hint: "Synthesis: integrate dimensions, quote if apt, Viksit Bharat/SDG hook.",
+        pdfKeyPhrases: ["conclusion", "summary", "synthesis", "thus", "therefore"]
+      }
+    ]
+  }
+};
+
+// ── Category detection function ───────────────────────────────────────────────
+// Returns the best-matching TOPIC_CATEGORIES key for a given topic string.
+// GENERIC is the fallback if nothing matches.
+
+export function detectTopicCategory(topic) {
+  const t = topic.toLowerCase();
+  const scores = {};
+  for (const [catKey, catData] of Object.entries(TOPIC_CATEGORIES)) {
+    if (catKey === "GENERIC") continue;
+    scores[catKey] = catData.matchKeywords.filter(kw => t.includes(kw)).length;
+  }
+  const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+  return (best && best[1] > 0) ? best[0] : "GENERIC";
+}
+
+// ── Get sections for a topic ──────────────────────────────────────────────────
+// Returns the array of section objects for a given topic string.
+
+export function getSectionsForTopic(topic) {
+  const catKey = detectTopicCategory(topic);
+  return TOPIC_CATEGORIES[catKey].sections;
+}

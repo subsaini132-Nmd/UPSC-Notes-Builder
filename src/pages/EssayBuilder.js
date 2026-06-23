@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ESSAY_TOPICS, ESSAY_CATEGORIES, ESSAY_STRUCTURE, ESSAY_SAMPLES, GS_TAGS } from "../lib/constants";
+import { highlightEssayPara } from "../lib/highlightUtils";
 
 function wordCount(text) {
   return text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -46,9 +47,10 @@ export default function EssayBuilder({ onNavigate }) {
   const [customTopic, setCustom]  = useState("");
   const [useCustom, setUseCustom] = useState(false);
   const [content, setContent]     = useState({});
-  const [loadedSample, setLoaded] = useState(false);
-  const [previewOpen, setPreview] = useState(false);
-  const [expandedSec, setExpSec]  = useState("hook");
+  const [loadedSample, setLoaded]   = useState(false);
+  const [previewOpen, setPreview]   = useState(false);
+  const [expandedSec, setExpSec]    = useState("hook");
+  const [editingSec,  setEditingSec] = useState({});
 
   const essayTag = GS_TAGS.find(g => g.id === "ess");
 
@@ -69,7 +71,7 @@ export default function EssayBuilder({ onNavigate }) {
     }
   };
 
-  const clearAll = () => { setContent({}); setLoaded(false); };
+  const clearAll = () => { setContent({}); setLoaded(false); setEditingSec({}); };
 
   const fullEssayText = ESSAY_STRUCTURE
     .map(s => content[s.id] || "")
@@ -201,7 +203,7 @@ export default function EssayBuilder({ onNavigate }) {
               const wc     = wordCount(text);
               const isOpen = expandedSec === sec.id;
               return (
-                <div key={sec.id} className={`essay-sec-card ${isOpen ? "essay-sec-open" : ""} ${wc > 0 ? "essay-sec-has-content" : ""}`}>
+                <div key={sec.id} className={`essay-sec-card essay-sec-card--${sec.id} ${isOpen ? "essay-sec-open" : ""} ${wc > 0 ? "essay-sec-has-content" : ""}`}>
                   <div className="essay-sec-header" onClick={() => setExpSec(isOpen ? null : sec.id)}>
                     <span className="essay-sec-icon">{sec.icon}</span>
                     <div className="essay-sec-title-wrap">
@@ -223,12 +225,42 @@ export default function EssayBuilder({ onNavigate }) {
                   {isOpen && (
                     <div className="essay-sec-body">
                       <div className="essay-sec-hint">{sec.hint}</div>
-                      <AutoTextarea
-                        value={text}
-                        onChange={val => setContent(prev => ({ ...prev, [sec.id]: val }))}
-                        placeholder={`Write your ${sec.label.toLowerCase()}…`}
-                        className="essay-textarea"
-                      />
+
+                      {/* Highlighted read-only view when content exists and not in edit mode */}
+                      {text && !editingSec[sec.id] ? (
+                        <div className="essay-sec-hl-wrap">
+                          <div
+                            className="essay-sec-hl-body"
+                            dangerouslySetInnerHTML={{ __html: highlightEssayPara(text) }}
+                          />
+                          <button
+                            className="essay-sec-edit-btn"
+                            onClick={() => setEditingSec(prev => ({ ...prev, [sec.id]: true }))}
+                          >
+                            ✎ Edit
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <AutoTextarea
+                            value={text}
+                            onChange={val => {
+                              setContent(prev => ({ ...prev, [sec.id]: val }));
+                            }}
+                            placeholder={`Write your ${sec.label.toLowerCase()}…`}
+                            className="essay-textarea"
+                          />
+                          {text && (
+                            <button
+                              className="essay-sec-done-btn"
+                              onClick={() => setEditingSec(prev => ({ ...prev, [sec.id]: false }))}
+                            >
+                              ✓ Done editing
+                            </button>
+                          )}
+                        </>
+                      )}
+
                       <WordBar count={wc} target={sec.wordTarget} />
                     </div>
                   )}
@@ -256,8 +288,14 @@ export default function EssayBuilder({ onNavigate }) {
                 if (!text) return null;
                 return (
                   <div key={sec.id} className="essay-preview-section">
-                    <div className="essay-preview-sec-label">{sec.icon} {sec.label}</div>
-                    <p className="essay-preview-para">{text}</p>
+                    <div className={`essay-preview-sec-label essay-preview-sec-label--${sec.id}`}>
+                      <span className="essay-preview-sec-icon">{sec.icon}</span>
+                      {sec.label}
+                    </div>
+                    <div
+                      className="essay-preview-para"
+                      dangerouslySetInnerHTML={{ __html: highlightEssayPara(text) }}
+                    />
                   </div>
                 );
               })}

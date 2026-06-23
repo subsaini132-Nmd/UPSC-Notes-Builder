@@ -1,101 +1,310 @@
-import React, { useState } from "react";
-import { SAMPLE_TOPICS, NOTE_SECTIONS, GS_TAGS } from "../lib/constants";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  SAMPLE_TOPICS, GS_TAGS, SAMPLE_PDFS,
+  getSectionsForTopic, detectTopicCategory, TOPIC_CATEGORIES,
+} from "../lib/constants";
+import { searchPdfContent, getTopicSuggestions } from "../lib/pdfExtract";
 
-const TODAY = "2026-06-20";
+const TODAY = new Date().toISOString().slice(0, 10);
+
+// ── Source docs from localStorage ────────────────────────────────────────────
+
+function loadIndexedDocs() {
+  try {
+    const saved = localStorage.getItem("upsc_library_docs");
+    if (saved) return JSON.parse(saved).filter(d => d.status === "indexed");
+  } catch {}
+  return SAMPLE_PDFS.filter(d => d.status === "indexed");
+}
+
+// ── GS auto-detect ────────────────────────────────────────────────────────────
 
 function detectGs(topic) {
   const t = topic.toLowerCase();
-  if (/history|heritage|culture|art|society|social|gender|women|tribe|tribal|geography|river|climate|disaster|flood/.test(t)) return "gs1";
-  if (/polity|governance|constitution|parliament|federal|rights|welfare|international|policy|scheme|foreign|bilateral/.test(t)) return "gs2";
-  if (/economy|agriculture|food|energy|infrastructure|technology|science|environment|biodiversity|security|cyber|digital/.test(t)) return "gs3";
-  if (/ethics|integrity|attitude|aptitude|corruption|probity|emotional|case study/.test(t)) return "gs4";
+  if (/history|heritage|culture|art|society|social|gender|women|tribe|geography|river|climate|disaster|ancient|medieval|mughal|empire|civilization|freedom|colonial|nationalism|bhakti|sufi|sculpture|painting|architecture|maratha/.test(t)) return "gs1";
+  if (/polity|governance|constitution|parliament|federal|rights|welfare|international|policy|scheme|foreign|bilateral|judiciary|election|amendment|panchayat|lokpal|rti/.test(t)) return "gs2";
+  if (/economy|agriculture|food|energy|infrastructure|technology|science|environment|biodiversity|security|cyber|digital|industry|msme|gst|gdp|manufacturing|startup/.test(t)) return "gs3";
+  if (/ethics|integrity|attitude|aptitude|corruption|probity|emotional|case study|civil servant|public service|whistle|dilemma/.test(t)) return "gs4";
   return "gs2";
 }
 
-const SECTION_TEMPLATES = {
-  definition:   (topic) => `${topic} refers to the process, concept, or phenomenon that encompasses [expand with formal definitions]. Key definitional frameworks include those from international bodies (UN, UNDP, World Bank) and Indian statutory definitions. Constitutional and legal interpretations further shape its scope.`,
-  background:   (topic) => `The historical evolution of ${topic} in India traces several phases. Pre-independence roots, colonial-era policy interventions, Constituent Assembly deliberations, and post-1991 reforms each shaped the contemporary understanding. Key milestones and turning points are: [list with dates and significance].`,
-  context:      (topic) => `The current context of ${topic} is shaped by: (1) domestic policy priorities, (2) global commitments and SDG targets, and (3) socio-economic pressures. Recent data and reports [cite NITI Aayog, Economic Survey, CAG] indicate [key statistics and trends relevant to ${topic}].`,
-  constitution: (topic) => `Constitutional provisions governing ${topic}: Fundamental Rights (Part III), Directive Principles of State Policy (Part IV), and Fundamental Duties (Part IVA) together create the normative framework. Relevant Articles include [list Articles]. The 42nd, 44th, 73rd, 74th, and 86th Constitutional Amendments have progressively strengthened this framework.`,
-  legal:        (topic) => `The legislative architecture for ${topic} comprises [key Acts, Rules, and Regulations]. Important statutory bodies and their mandates include [list]. Recent amendments and their implications: [describe changes]. Pending legislative gaps that require attention: [identify].`,
-  schemes:      (topic) => `Government schemes and programmes addressing ${topic}: Central Sector Schemes (100% central funding) — [list]. Centrally Sponsored Schemes (shared) — [list]. State-specific initiatives — [mention best practices]. Key data on coverage, beneficiaries, and outcomes: [add from Economic Survey, PIB, Ministry reports].`,
-  data:         (topic) => `Key statistics and data on ${topic} (cite sources):\n• India's ranking in global indices: [rank, index name, year]\n• Domestic indicators: [metric, value, year, source]\n• State-wise variation: [top/bottom states]\n• Trend over time: [improvement/deterioration with data]\n• Target vs. achievement: [scheme targets vs. actuals]`,
-  challenges:   (topic) => `Major challenges in ${topic}:\n1. Structural: [deep-rooted systemic issues]\n2. Institutional: [governance gaps, capacity constraints]\n3. Financial: [resource mobilisation, leakages]\n4. Social/cultural: [behavioural and attitudinal barriers]\n5. Implementation: [last-mile delivery, monitoring gaps]\n6. Coordination: [centre-state, inter-ministry conflicts]\n7. Data: [measurement gaps, underreporting]`,
-  causes:       (topic) => `Root causes of issues in ${topic} can be mapped across four dimensions:\n• Historical: [colonial legacy, policy neglect]\n• Economic: [resource constraints, market failures]\n• Social: [inequality, discrimination, exclusion]\n• Institutional: [regulatory gaps, weak enforcement, corruption]`,
-  impacts:      (topic) => `Impacts of ${topic} span multiple dimensions:\n• Economic: [GDP, employment, productivity effects]\n• Social: [equity, health, education outcomes]\n• Environmental: [ecological consequences if applicable]\n• Political: [governance, security implications]\n• International: [India's global commitments and standing]`,
-  committees:   (topic) => `Key committees and commissions on ${topic}:\n[Committee/Commission name (Year)] — Chairperson — Key recommendations\n[Committee name (Year)] — Chairperson — Key recommendations\nParliamentary Standing Committee reports and CAG audit findings should also be cited here.`,
-  judgements:   (topic) => `Landmark Supreme Court and High Court judgements on ${topic}:\n• [Case name v. State/UoI (Year)]: Holding and significance\n• [Case name (Year)]: Key ratio decidendi\nNational Green Tribunal / NCLAT / NCLT orders (where applicable): [cite]`,
-  intl:         (topic) => `International perspectives and comparisons on ${topic}:\n• Global best practices: [Country — model — outcomes]\n• International frameworks: [Treaty/Convention — India's obligations]\n• UN SDG linkages: [Goal number and target]\n• India's global commitments: [bilateral/multilateral agreements]\n• Comparative data: [India's position vs. peers]`,
-  casestudies:  (topic) => `Case studies illustrating ${topic}:\n1. [State/District/Programme name]: Context → Intervention → Outcome → Lesson\n2. [State/District/Programme name]: Context → Intervention → Outcome → Lesson\n3. International: [Country]: What India can learn\nThese examples should be drawn from official reports, newspaper accounts, and academic sources.`,
-  india:        (topic) => `India-specific dimensions of ${topic}:\n• Federal dynamics: Centre-state tensions and cooperative mechanisms\n• Regional variations: North-South, urban-rural, tribal-mainstream divides\n• India's unique context: [size, diversity, democracy, development stage]\n• Constitutional uniqueness: [specific to India's framework]\n• Demographic dividend and its relevance to ${topic}`,
-  rajasthan:    (topic) => `Rajasthan-specific context of ${topic}:\n• State-level data and indicators: [cite State Economic Survey, NFHS-5 Rajasthan factsheet]\n• Key challenges specific to Rajasthan: [arid geography, tribal areas, border districts]\n• State government initiatives: [Rajasthan Budget, specific schemes]\n• Best practices from Rajasthan: [district-level success stories]\n• Areas requiring improvement: [gaps with national benchmarks]`,
-  ethics:       (topic) => `Ethical dimensions of ${topic}:\n• Values at stake: [dignity, equity, justice, sustainability, accountability]\n• Philosophical frameworks:\n  – Utilitarian: [greatest good analysis]\n  – Deontological (Kantian): [duty and rights-based analysis]\n  – Virtue ethics: [character and integrity angle]\n• Ethical dilemmas in ${topic}: [competing values and how to balance]\n• Role of civil servants: [GS IV relevance — integrity, impartiality, empathy]`,
-  anthro:       (topic) => `Anthropological perspective on ${topic}:\n• Cultural dimension: How different communities understand and experience ${topic}\n• Tribal communities: Special vulnerabilities and resistances of Scheduled Tribes\n• Caste and ${topic}: How caste hierarchy intersects with the issue\n• Folk knowledge and indigenous practices: [relevance to ${topic}]\n• Theoretical lens (optional): [Functionalism / Structuralism / Applied Anthropology angle]`,
-  conclusion:   (topic) => `Way forward on ${topic}:\n1. Short-term: [Immediate policy/administrative actions, within 1–2 years]\n2. Medium-term: [Legislative reforms, institutional strengthening, within 5 years]\n3. Long-term: [Structural transformation, social change, SDG 2030 alignment]\n\nKey stakeholders: Government (Centre + State) | Civil society | Private sector | International community\n\nConclusion: ${topic} demands an integrated, multi-stakeholder approach that bridges the gap between policy intent and ground-level reality. The time to act is now.`,
-};
+// ── Wikipedia fetching ────────────────────────────────────────────────────────
 
-function generateContent(topic, gs, selectedSections) {
+async function resolveWikiTitle(topic) {
+  try {
+    const url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(topic)}&limit=3&format=json&origin=*`;
+    const res  = await fetch(url, { signal: AbortSignal.timeout(6000) });
+    const data = await res.json();
+    return data[1]?.[0] || topic;
+  } catch { return topic; }
+}
+
+async function fetchWikiExtract(title) {
+  try {
+    const url = `https://en.wikipedia.org/w/api.php?action=query` +
+      `&titles=${encodeURIComponent(title)}` +
+      `&prop=extracts&format=json&origin=*` +
+      `&explaintext=true&exsectionformat=plain&exchars=18000`;
+    const res  = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    const data = await res.json();
+    const pages = data?.query?.pages || {};
+    const page  = Object.values(pages)[0];
+    if (!page || page.missing || !page.extract) return null;
+    return { title: page.title, extract: page.extract };
+  } catch { return null; }
+}
+
+function parseWikiSections(extract) {
   const sections = {};
-  selectedSections.forEach(sectionId => {
-    const template = SECTION_TEMPLATES[sectionId];
-    sections[sectionId] = template ? template(topic) : `[Add your notes on ${topic} — ${sectionId} — here]`;
-  });
-  const noteSection = NOTE_SECTIONS.find(s => s.id === selectedSections[0]);
+  let currentKey = "__intro__";
+  let buffer     = [];
+  for (const line of extract.split("\n")) {
+    const m = line.match(/^={2,4}\s*(.+?)\s*={2,4}$/);
+    if (m) {
+      sections[currentKey] = buffer.join("\n").trim();
+      currentKey = m[1].toLowerCase();
+      buffer     = [];
+    } else {
+      buffer.push(line);
+    }
+  }
+  sections[currentKey] = buffer.join("\n").trim();
+  return sections;
+}
+
+// Pick best Wikipedia content for a dynamic section using its key phrases
+function pickWikiForSection(sec, wikiSecs) {
+  const phrases   = (sec.pdfKeyPhrases || []).map(p => p.toLowerCase());
+  const labelWords = sec.label.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+
+  let best = { score: 0, text: null, key: "" };
+
+  for (const [wKey, wText] of Object.entries(wikiSecs)) {
+    if (!wText || wText.length < 80) continue;
+    const lower     = wText.toLowerCase();
+    const wKeyLower = wKey.toLowerCase();
+    const phraseHits = phrases.reduce((s, p) => s + (lower.includes(p) ? 3 : 0), 0);
+    const labelHits  = labelWords.reduce((s, w) => s + (wKeyLower.includes(w) ? 2 : 0), 0);
+    const score = phraseHits + labelHits;
+    if (score > best.score) best = { score, text: wText, key: wKey };
+  }
+
+  // Always fall back to intro for definition/overview sections
+  const isIntroSection = /overview|introduction|definition|concept|about|location/i.test(sec.label);
+  if ((!best.text || best.score < 2) && wikiSecs["__intro__"]) {
+    if (isIntroSection || !best.text) best.text = wikiSecs["__intro__"];
+  }
+
+  if (!best.text) return null;
+
+  // Format: extract meaningful paragraphs, cap at ~100 words
+  const paras = best.text.split("\n\n").filter(p => p.trim().length > 40);
+  if (!paras.length) return null;
+  const words = paras.slice(0, 3).join("\n\n").replace(/\[\d+\]/g, "").trim().split(/\s+/);
+  return words.slice(0, 120).join(" ");
+}
+
+// Build a UPSC-style template for any section using its label and hint
+function buildFallback(sec, topic) {
+  const { label, hint, id } = sec;
+  if (id === "wayforward" || /way forward/i.test(label)) {
+    return `Way Forward for ${topic}:\n• Short-term: [Immediate administrative and policy actions]\n• Medium-term: [Legislative reforms, institutional capacity]\n• Long-term: [Structural transformation, SDG alignment]\n• Key stakeholders: Government | Civil Society | Private Sector | International`;
+  }
+  if (id === "conclusion") {
+    return `${topic} represents a critical area that demands coordinated multi-stakeholder action. ${hint || "A comprehensive policy framework addressing root causes while leveraging India's strengths is essential."} Political will, institutional capacity, and citizen participation must converge for sustainable outcomes.`;
+  }
+  // Generic UPSC-template
+  return `${label} — ${topic}:\n• ${hint || "Add dimension-specific analysis"}\n• [Cite relevant data: NITI Aayog / Economic Survey / MHA / PIB / CAG]\n• [Add examples from Indian states or global best practices]\n• [Include policy/constitutional/legal angle where applicable]`;
+}
+
+// ── Content generation ────────────────────────────────────────────────────────
+
+// sectionConfigs: array of { id, label, icon, pdfKeyPhrases, hint }
+async function generateContent(topic, gs, sectionConfigs, docIds = []) {
+  // Priority 1 — Search PDF library using section-specific phrases
+  let pdfChunks = {};
+  try {
+    pdfChunks = await searchPdfContent(docIds, topic, sectionConfigs);
+  } catch {}
+
+  // Priority 2 — Wikipedia
+  let wikiSecs = null;
+  const wikiTitle = await resolveWikiTitle(topic);
+  const wikiData  = await fetchWikiExtract(wikiTitle);
+  if (wikiData?.extract) wikiSecs = parseWikiSections(wikiData.extract);
+
+  const sections  = {};
+  const _sources  = {};
+
+  for (const sec of sectionConfigs) {
+    const sid = sec.id;
+    let content = null;
+    let source  = "template";
+
+    // PDF content — pre-formatted text from searchPdfContent
+    if (pdfChunks[sid] && pdfChunks[sid].length >= 50) {
+      content = pdfChunks[sid];
+      source  = "pdf";
+    }
+
+    // Wikipedia — phrase-guided section matching
+    if (!content && wikiSecs) {
+      const wikiText = pickWikiForSection(sec, wikiSecs);
+      if (wikiText && wikiText.trim().length >= 50) {
+        content = wikiText;
+        source  = "wiki";
+      }
+    }
+
+    // Fallback template
+    if (!content) {
+      content = buildFallback(sec, topic);
+      source  = "template";
+    }
+
+    sections[sid] = content;
+    _sources[sid] = source;
+  }
+
   return {
     topic,
     gs,
-    date: TODAY,
-    wordCount: selectedSections.length * 80,
+    date:           TODAY,
+    wordCount:      sectionConfigs.length * 80,
+    wikiTitle:      wikiData?.title || null,
+    _sources,
+    _sectionConfig: sectionConfigs.map(({ id, label, icon }) => ({ id, label, icon })),
     sections,
   };
 }
 
+// ── Category display config ───────────────────────────────────────────────────
+
+const CAT_META = {
+  GEOGRAPHY:     { label: "Geography",          icon: "🗺️",  color: "#0369A1", bg: "#F0F9FF" },
+  HISTORY:       { label: "History & Culture",  icon: "📜",  color: "#7C3AED", bg: "#F5F3FF" },
+  SECURITY:      { label: "Internal Security",  icon: "🛡️",  color: "#DC2626", bg: "#FEF2F2" },
+  ENVIRONMENT:   { label: "Environment",        icon: "🌿",  color: "#059669", bg: "#ECFDF5" },
+  ECONOMY:       { label: "Economy",            icon: "📈",  color: "#D97706", bg: "#FFFBEB" },
+  POLITY:        { label: "Polity & Governance",icon: "⚖️",  color: "#1E3A5F", bg: "#EFF6FF" },
+  SCIENCE_TECH:  { label: "Science & Tech",     icon: "🔬",  color: "#0891B2", bg: "#ECFEFF" },
+  SOCIETY:       { label: "Society & Social",   icon: "👥",  color: "#7C2D12", bg: "#FFF7ED" },
+  INTERNATIONAL: { label: "International",      icon: "🌐",  color: "#065F46", bg: "#ECFDF5" },
+  ETHICS:        { label: "Ethics",             icon: "🧭",  color: "#92400E", bg: "#FFFBEB" },
+  GENERIC:       { label: "General Topic",      icon: "📖",  color: "#4A4A6A", bg: "#F7F5F0" },
+};
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export default function NoteGenerator({ onNavigate, onCreateNote }) {
-  const [topic, setTopic]       = useState("");
-  const [gsPaper, setGsPaper]   = useState("auto");
-  const [step, setStep]         = useState("input");
-  const [selected, setSelected] = useState(NOTE_SECTIONS.map(s => s.id));
+  const [topic,          setTopic]          = useState("");
+  const [gsPaper,        setGsPaper]        = useState("auto");
+  const [step,           setStep]           = useState("input");
+  const [sourcePdf,      setSourcePdf]      = useState("all");
+  const [genLabel,       setGenLabel]       = useState("");
+  const [pdfSuggestions, setPdfSuggestions] = useState([]);
+  const [loadingSugg,    setLoadingSugg]    = useState(false);
+
+  // Dynamic section state
+  const [dynamicSections, setDynamicSections] = useState([]);
+  const [topicCategory,   setTopicCategory]   = useState("GENERIC");
+  const [selected,        setSelected]        = useState([]); // section IDs to include
+
+  const [indexedDocs, setIndexedDocs] = useState(loadIndexedDocs);
+  useEffect(() => { setIndexedDocs(loadIndexedDocs()); }, []);
+
+  const refreshDocs = useCallback(() => setIndexedDocs(loadIndexedDocs()), []);
+
+  const activeDocs   = sourcePdf === "all" ? indexedDocs : indexedDocs.filter(d => d.id === sourcePdf);
+  const activeChunks = activeDocs.reduce((s, d) => s + (d.chunks || 0), 0);
+
+  // Re-classify topic and update sections whenever topic changes
+  useEffect(() => {
+    if (!topic.trim()) {
+      setDynamicSections([]);
+      setTopicCategory("GENERIC");
+      setSelected([]);
+      return;
+    }
+    const cat  = detectTopicCategory(topic.trim());
+    const secs = getSectionsForTopic(topic.trim());
+    setTopicCategory(cat);
+    setDynamicSections(secs);
+    setSelected(secs.map(s => s.id)); // default: all selected
+  }, [topic]);
+
+  // PDF topic suggestions
+  useEffect(() => {
+    const ids = activeDocs.map(d => d.id);
+    if (ids.length === 0) { setPdfSuggestions([]); return; }
+    setLoadingSugg(true);
+    getTopicSuggestions(ids)
+      .then(s => { setPdfSuggestions(s); setLoadingSugg(false); })
+      .catch(() => setLoadingSugg(false));
+  // eslint-disable-next-line
+  }, [sourcePdf, indexedDocs]);
 
   const toggleSection = (id) =>
     setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
-  const handleGenerate = () => {
-    if (!topic.trim()) return;
+  const selectedConfigs = dynamicSections.filter(s => selected.includes(s.id));
+
+  const handleGenerate = async () => {
+    if (!topic.trim() || selectedConfigs.length === 0) return;
     setStep("generating");
 
-    setTimeout(() => {
-      const resolvedGs = gsPaper === "auto" ? detectGs(topic) : gsPaper;
-      const noteId     = `note-${Date.now()}`;
-      const meta = {
-        id:        noteId,
-        topic:     topic.trim(),
-        gs:        resolvedGs,
-        wordCount: selected.length * 80,
-        date:      TODAY,
-        sections:  selected.length,
-        status:    "draft",
-      };
-      const content = generateContent(topic.trim(), resolvedGs, selected);
+    const resolvedGs = gsPaper === "auto" ? detectGs(topic) : gsPaper;
+    const noteId     = `note-${Date.now()}`;
+    const catMeta    = CAT_META[topicCategory] || CAT_META.GENERIC;
 
-      if (onCreateNote) {
-        onCreateNote(meta, content);
-      } else {
-        onNavigate("notes");
-      }
-    }, 2200);
+    setGenLabel(`Classified: ${catMeta.label} — searching PDFs…`);
+    const content = await generateContent(
+      topic.trim(), resolvedGs, selectedConfigs, activeDocs.map(d => d.id)
+    );
+
+    setGenLabel("Building adaptive note structure…");
+    await new Promise(r => setTimeout(r, 500));
+
+    const meta = {
+      id:        noteId,
+      topic:     topic.trim(),
+      gs:        resolvedGs,
+      category:  topicCategory,
+      wordCount: selectedConfigs.length * 80,
+      date:      TODAY,
+      sections:  selectedConfigs.length,
+      status:    "draft",
+    };
+
+    if (onCreateNote) {
+      onCreateNote(meta, content);
+    } else {
+      onNavigate("notes");
+    }
   };
 
+  // ── Generating screen ─────────────────────────────────────────────────────
+
   if (step === "generating") {
+    const catMeta = CAT_META[topicCategory] || CAT_META.GENERIC;
     return (
       <div className="page generating-page">
         <div className="generating-card">
           <div className="generating-spinner" />
+          <div className="gen-category-badge" style={{ background: catMeta.bg, color: catMeta.color }}>
+            {catMeta.icon} {catMeta.label}
+          </div>
           <div className="generating-topic">{topic}</div>
-          <div className="generating-label">Searching your PDFs for relevant content…</div>
+          <div className="generating-label">{genLabel}</div>
           <div className="generating-steps">
-            {["Embedding topic query", "Retrieving top 20 chunks", "Sending context to Claude", "Structuring 22 sections"].map((s, i) => (
+            {[
+              `Classifying as ${catMeta.label} topic`,
+              "Searching your PDF library",
+              "Fetching Wikipedia content",
+              `Building ${selectedConfigs.length} adaptive sections`,
+            ].map((s, i) => (
               <div key={s} className="gen-step">
-                <div className="gen-step-dot active" style={{ animationDelay: `${i * 0.4}s` }} />
+                <div className="gen-step-dot active" style={{ animationDelay: `${i * 0.5}s` }} />
                 <span>{s}</span>
               </div>
             ))}
@@ -104,6 +313,10 @@ export default function NoteGenerator({ onNavigate, onCreateNote }) {
       </div>
     );
   }
+
+  // ── Input screen ──────────────────────────────────────────────────────────
+
+  const catMeta = topic.trim() ? (CAT_META[topicCategory] || CAT_META.GENERIC) : null;
 
   return (
     <div className="page">
@@ -114,16 +327,24 @@ export default function NoteGenerator({ onNavigate, onCreateNote }) {
         </div>
       </div>
 
-      {/* Topic input */}
       <div className="gen-input-card">
         <label className="gen-field-label">Topic</label>
-        <input
-          className="gen-input"
-          placeholder="e.g. Women Empowerment, Urban Flooding, Climate Change…"
-          value={topic}
-          onChange={e => setTopic(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && handleGenerate()}
-        />
+        <div className="gen-topic-row">
+          <input
+            className="gen-input"
+            placeholder="e.g. Siliguri Corridor, Vijayanagara Empire, Left Wing Extremism…"
+            value={topic}
+            onChange={e => setTopic(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleGenerate()}
+          />
+          {catMeta && (
+            <div className="gen-category-badge" style={{ background: catMeta.bg, color: catMeta.color }}>
+              {catMeta.icon} {catMeta.label}
+            </div>
+          )}
+        </div>
+
+        {/* Quick topic chips */}
         <div className="gen-suggestions">
           {SAMPLE_TOPICS.slice(0, 8).map(t => (
             <button key={t} className="suggestion-chip" onClick={() => setTopic(t)}>{t}</button>
@@ -139,50 +360,120 @@ export default function NoteGenerator({ onNavigate, onCreateNote }) {
             </select>
           </div>
           <div className="gen-field">
-            <label className="gen-field-label">Source PDFs</label>
-            <select className="gen-select">
-              <option>All indexed PDFs (6 sources)</option>
-              <option>Economic Survey only</option>
-              <option>Current Affairs only</option>
+            <div className="gen-src-label-row">
+              <label className="gen-field-label">Source PDFs</label>
+              <button className="gen-refresh-btn" onClick={refreshDocs} title="Reload from PDF Library">
+                ↻ Refresh ({indexedDocs.length})
+              </button>
+            </div>
+            <select className="gen-select" value={sourcePdf} onChange={e => setSourcePdf(e.target.value)}>
+              <option value="all">All indexed docs ({indexedDocs.length} source{indexedDocs.length !== 1 ? "s" : ""})</option>
+              {indexedDocs.map(d => (
+                <option key={d.id} value={d.id}>{d.name} ({(d.chunks || 0).toLocaleString()} chunks)</option>
+              ))}
             </select>
+            {indexedDocs.length === 0 && (
+              <div className="gen-no-docs-hint">
+                No indexed documents —{" "}
+                <button className="gen-link" onClick={() => onNavigate && onNavigate("library")}>upload in PDF Library</button>
+              </div>
+            )}
           </div>
+        </div>
+
+        {/* PDF topic suggestions */}
+        {(pdfSuggestions.length > 0 || loadingSugg) && (
+          <div className="gen-pdf-topics">
+            <div className="gen-pdf-topics-label">
+              <span className="gen-pdf-topics-icon">📄</span>
+              Topics detected in your PDFs — click to use:
+            </div>
+            {loadingSugg
+              ? <div className="gen-pdf-topics-loading">Scanning PDF content…</div>
+              : (
+                <div className="gen-pdf-topics-chips">
+                  {pdfSuggestions.map(t => (
+                    <button key={t} className="gen-pdf-chip" onClick={() => setTopic(t)}>{t}</button>
+                  ))}
+                </div>
+              )
+            }
+          </div>
+        )}
+
+        <div className="gen-wiki-note">
+          <span className="gen-wiki-icon">✦</span>
+          Sections auto-adapt to the topic type · PDFs first · Wikipedia fallback · UPSC templates last
         </div>
       </div>
 
-      {/* Section selector */}
+      {/* Adaptive section picker */}
       <div className="gen-section-card">
-        <div className="gen-section-header">
-          <div className="gen-section-title">Sections to Include</div>
-          <div className="gen-section-actions">
-            <button className="gen-link" onClick={() => setSelected(NOTE_SECTIONS.map(s => s.id))}>Select all</button>
-            <span>·</span>
-            <button className="gen-link" onClick={() => setSelected([])}>Clear</button>
-            <span className="gen-section-count">{selected.length}/{NOTE_SECTIONS.length} selected</span>
+        {!topic.trim() ? (
+          <div className="gen-section-empty">
+            <div className="gen-section-empty-icon">🎯</div>
+            <div className="gen-section-empty-title">Enter a topic above to see relevant UPSC sections</div>
+            <div className="gen-section-empty-sub">
+              Sections adapt to the topic type: Geography notes get different dimensions than Security or History notes.
+            </div>
           </div>
-        </div>
-        <div className="section-picker-grid">
-          {NOTE_SECTIONS.map(s => (
-            <label key={s.id} className={`section-picker-item ${selected.includes(s.id) ? "picked" : ""}`}>
-              <input type="checkbox" checked={selected.includes(s.id)} onChange={() => toggleSection(s.id)} />
-              <span className="sp-icon">{s.icon}</span>
-              <span className="sp-label">{s.label}</span>
-            </label>
-          ))}
-        </div>
+        ) : (
+          <>
+            <div className="gen-section-header">
+              <div className="gen-section-title-wrap">
+                <div className="gen-section-title">
+                  {catMeta?.icon} {catMeta?.label} Note Sections
+                </div>
+                <div className="gen-section-hint">
+                  These dimensions are specifically chosen for this topic type
+                </div>
+              </div>
+              <div className="gen-section-actions">
+                <button className="gen-link" onClick={() => setSelected(dynamicSections.map(s => s.id))}>Select all</button>
+                <span>·</span>
+                <button className="gen-link" onClick={() => setSelected([])}>Clear</button>
+                <span className="gen-section-count">{selected.length}/{dynamicSections.length} selected</span>
+              </div>
+            </div>
+            <div className="section-picker-list">
+              {dynamicSections.map(s => (
+                <label
+                  key={s.id}
+                  className={`section-picker-row ${selected.includes(s.id) ? "picked" : ""}`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(s.id)}
+                    onChange={() => toggleSection(s.id)}
+                  />
+                  <span className="sp-icon">{s.icon}</span>
+                  <div className="sp-info">
+                    <span className="sp-label">{s.label}</span>
+                    {s.hint && <span className="sp-hint">{s.hint}</span>}
+                  </div>
+                </label>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
-      {/* Generate */}
       <div className="gen-footer">
         <div className="gen-footer-info">
           <span className="gen-footer-icon">🔍</span>
-          Will search <strong>6,168 chunks</strong> across 4 indexed PDFs
+          Will search <strong>{activeChunks.toLocaleString()} chunks</strong> across{" "}
+          {sourcePdf === "all"
+            ? <><strong>{indexedDocs.length}</strong> doc{indexedDocs.length !== 1 ? "s" : ""}</>
+            : <strong>{activeDocs[0]?.name || "selected doc"}</strong>
+          }
+          {" + Wikipedia"}
         </div>
         <button
           className="primary-btn large"
           onClick={handleGenerate}
-          disabled={!topic.trim() || selected.length === 0}
+          disabled={!topic.trim() || selectedConfigs.length === 0}
         >
-          ✦ Generate Note ({selected.length} sections)
+          ✦ Generate Note ({selectedConfigs.length} sections)
         </button>
       </div>
     </div>
